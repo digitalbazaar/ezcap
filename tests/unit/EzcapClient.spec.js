@@ -7,14 +7,14 @@ chai.use(dirtyChai);
 chai.should();
 const {expect} = chai;
 
-import {Example} from '../../';
+import {EzcapClient} from '../../';
 
-describe('Example', () => {
+describe('EzcapClient', () => {
   describe('constructor', () => {
-    it('should exist', async () => {
-      const ex = new Example();
+    it('should create an EzcapClient', async () => {
+      const ezcap = new EzcapClient();
 
-      expect(ex).to.exist();
+      expect(ezcap).to.exist();
     });
   });
 });
