@@ -24,8 +24,11 @@
   "module": "lib/main.js",
   "dependencies": {
     "@digitalbazaar/http-client": "^1.0.0",
+    "bnid": "^2.0.0",
     "esm": "^3.2.25",
-    "http-signature-zcap-invoke": "^2.0.0"
+    "http-signature-zcap-invoke": "^2.0.0",
+    "jsonld-signatures": "^6.0.0",
+    "ocapld": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
