@@ -1,8 +1,8 @@
 {
-  "name": "@digitalbazaar/isomorphic-js-lib-template",
+  "name": "ezcap",
   "version": "0.0.1",
   "description": "",
-  "homepage": "https://github.com/digitalbazaar/isomorphic-js-lib-template",
+  "homepage": "https://github.com/digitalbazaar/ezcap",
   "author": {
     "name": "Digital Bazaar, Inc.",
     "email": "support@digitalbazaar.com",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalbazaar/isomorphic-js-lib-template"
+    "url": "https://github.com/digitalbazaar/ezcap"
   },
   "bugs": {
-    "url": "https://github.com/digitalbazaar/isomorphic-js-lib-template/issues",
+    "url": "https://github.com/digitalbazaar/ezcap/issues",
     "email": "support@digitalbazaar.com"
   },
   "license": "BSD-3-Clause",
@@ -40,7 +40,7 @@
     "babel-loader": "^8.1.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
-    "did-method-key": "github:digitalbazaar/did-method-key#2021-generate-api",
+    "did-method-key": "github:digitalbazaar/did-method-key-js#2021-generate-api",
     "dirty-chai": "^2.0.1",
     "eslint": "^7.6.0",
     "eslint-config-digitalbazaar": "^2.5.0",
