@@ -1,6 +1,6 @@
-# ezcap-client
+# ezcap
 
-[![Node.js CI](https://github.com/digitalbazaar/ezcap-client/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/ezcap-client/actions?query=workflow%3A%22Node.js+CI%22)
+[![Node.js CI](https://github.com/digitalbazaar/ezcap/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/ezcap/actions?query=workflow%3A%22Node.js+CI%22)
 
 > An opinionated Authorization Capabilities (ZCAP) client library for the
 > browser and Node.js that is easy to use.
@@ -33,8 +33,8 @@ TBD
 To install locally (for development):
 
 ```
-git clone https://github.com/digitalbazaar/ezcap-client.git
-cd ezcap-client
+git clone https://github.com/digitalbazaar/ezcap.git
+cd ezcap
 npm install
 ```
 
@@ -49,23 +49,22 @@ npm install
 ### Creating a Client
 
 ```js
-import {Ed25519VerificationKey2018}
-  from '@digitalbazaar/ed25519-verification-key-2018';
+import {ZcapClient, getCapabilitySigners} from 'ezcap';
 import didKey from 'did-method-key';
-const {keyToDidDoc} = didKey.driver();
-import {ZcapClient} from 'ezcap-client';
+const didKeyDriver = didKey.driver();
 
-// the base URL to operate against
-const baseUrl = 'https://zcap.example/';
+// the base URL for the ZCAP client to operate against
+const baseUrl = 'https://zcap.example';
 
-// generate the cryptographic material for the ZCAP client
-const keypair = await Ed25519VerificationKey2018.generate();
-const invocationSigner = keypair.signer();
-const didDoc = await didKeyDriver.keyToDidDoc(keypair);
-invocationSigner.id = didDoc.capabilityInvocation[0];
+// generate a DID Document and set of keypairs
+const {didDocument, keyPairs} = await didKeyDriver.generate();
 
-// create the zcap client
-const zcapClient = new ZcapClient({baseUrl, invocationSigner});
+// extract the capability invocation and delegation signers
+const {invocationSigner, delegationSigner} = getCapabilitySigners({
+  didDocument, keyPairs});
+
+// create a new ZCAP client using the generated cryptographic material
+const zcapClient = new ZcapClient({baseUrl, invocationSigner, delegationSigner});
 ```
 
 ### Reading
@@ -100,11 +99,7 @@ const url = '/items';
 const item = {count: 12};
 
 // invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.invoke({
-  url,
-  method: 'patch',
-  json: item
-});
+const response = await zcapClient.invoke({url, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
@@ -116,7 +111,9 @@ const updatedItem = await response.json();
 const capability = 'https://zcap.example/foo';
 const delegate = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const actions = ['read'];
-const delegatedCapability = ezcap.delegate({capability, delegate, actions});
+const delegatedCapability = zcapClient.delegate({
+  capability, delegate, actions
+});
 ```
 
 ## Contribute
