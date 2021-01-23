@@ -1,4 +1,4 @@
-# ezcap-client Changelog
+# ezcap Changelog
 
 ## 1.0.0 - TBD
 
