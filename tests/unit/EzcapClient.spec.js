@@ -1,7 +1,7 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-import {ZcapClient} from '../../';
+import {getCapabilitySigners, ZcapClient} from '../../';
 import chai from 'chai';
 import didKey from 'did-method-key';
 import dirtyChai from 'dirty-chai';
@@ -15,26 +15,22 @@ describe('ZcapClient', () => {
   describe('constructor', () => {
     it('should create an ZcapClient', async () => {
       const baseUrl = 'https://zcap.example';
-      const didDocument = await didKeyDriver.generate();
-      const delegationKeypair =
-        didDocument.keys[didDocument.capabilityDelegation[0]];
-      const invocationKeypair =
-        didDocument.keys[didDocument.capabilityInvocation[0]];
+      const {didDocument, keyPairs} = await didKeyDriver.generate();
+      const {invocationSigner, delegationSigner} = getCapabilitySigners({
+        didDocument, keyPairs});
       const zcapClient = new ZcapClient({
-        baseUrl, delegationKeypair, invocationKeypair
+        baseUrl, invocationSigner, delegationSigner
       });
 
       expect(zcapClient).to.exist();
     });
     it('should delegate a zcap', async () => {
       const baseUrl = 'https://zcap.example';
-      const didDocument = await didKeyDriver.generate();
-      const delegationKeypair =
-        didDocument.keys[didDocument.capabilityDelegation[0]];
-      const invocationKeypair =
-        didDocument.keys[didDocument.capabilityInvocation[0]];
+      const {didDocument, keyPairs} = await didKeyDriver.generate();
+      const {invocationSigner, delegationSigner} = getCapabilitySigners({
+        didDocument, keyPairs});
       const zcapClient = new ZcapClient({
-        baseUrl, delegationKeypair, invocationKeypair
+        baseUrl, invocationSigner, delegationSigner
       });
       expect(zcapClient).to.exist();
 
