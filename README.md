@@ -101,9 +101,7 @@ const writtenItem = await response.json();
 const capability = 'https://zcap.example/foo';
 const delegate = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const actions = ['read'];
-const delegatedCapability = zcapClient.delegate({
-  capability, delegate, actions
-});
+const delegatedCapability = zcapClient.delegate({capability, delegate, actions});
 ```
 
 ### Reading with a Delegated Capability
