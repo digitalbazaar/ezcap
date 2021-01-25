@@ -2,8 +2,8 @@
 
 [![Node.js CI](https://github.com/digitalbazaar/ezcap/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/ezcap/actions?query=workflow%3A%22Node.js+CI%22)
 
-> An opinionated Authorization Capabilities (ZCAP) client library for the
-> browser and Node.js that is easy to use.
+> An easy to use, opinionated Authorization Capabilities (zcap) client library
+> for the browser and Node.js.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@
 ## Background
 
 This library provides a client that browser and node.js applications can use to
-interact with HTTP servers protected by ZCAP-based authorization. The library
+interact with HTTP servers protected by zcap-based authorization. The library
 is configured with secure and sensible defaults to help developers get started
 quickly and ensure that their client code is production-ready.
 
@@ -41,10 +41,13 @@ npm install
 ## Usage
 
 * [Creating a Client](#creating-a-client)
-* [Reading](#reading)
-* [Writing](#writing)
-* [Invoking a Capability](#invoking-a-capability)
+* [Reading with a Root Capability](#reading-with-a-root-capability)
+* [Writing with a Root Capability](#writing-with-a-root-capability)
 * [Delegating a Capability](#delegating-a-capability)
+* [Reading with a Delegated Capability](#reading-with-a-delegated-capability)
+* [Writing with a Delegated Capability](#writing-with-a-delegated-capability)
+* [Invoking with a Root Capability](#invoking-a-capability)
+* [Invoking with a Delegated Capability](#invoking-a-capability)
 
 ### Creating a Client
 
@@ -53,7 +56,7 @@ import {ZcapClient, getCapabilitySigners} from 'ezcap';
 import didKey from 'did-method-key';
 const didKeyDriver = didKey.driver();
 
-// the base URL for the ZCAP client to operate against
+// the base URL for the zcap client to operate against
 const baseUrl = 'https://zcap.example';
 
 // generate a DID Document and set of keypairs
@@ -63,14 +66,14 @@ const {didDocument, keyPairs} = await didKeyDriver.generate();
 const {invocationSigner, delegationSigner} = getCapabilitySigners({
   didDocument, keyPairs});
 
-// create a new ZCAP client using the generated cryptographic material
+// create a new zcap client using the generated cryptographic material
 const zcapClient = new ZcapClient({baseUrl, invocationSigner, delegationSigner});
 ```
 
-### Reading
+### Reading with a Root Capability
 
 ```js
-const url = '/items';
+const url = '/my-account/items';
 
 // reading a URL using a zcap will result in an HTTP Response
 const response = await zcapClient.read({url});
@@ -79,10 +82,10 @@ const response = await zcapClient.read({url});
 const items = await response.json();
 ```
 
-### Writing
+### Writing with a Root Capability
 
 ```js
-const url = '/items';
+const url = '/my-account/items';
 const item = {label: 'Widget'};
 
 // writing a URL using a zcap will result in an HTTP Response
@@ -90,19 +93,6 @@ const response = await zcapClient.write({url, json: item});
 
 // process the response appropriately
 const writtenItem = await response.json();
-```
-
-### Invoking a Capability
-
-```js
-const url = '/items';
-const item = {count: 12};
-
-// invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.invoke({url, method: 'patch', json: item});
-
-// process the response appropriately
-const updatedItem = await response.json();
 ```
 
 ### Delegating a Capability
@@ -114,6 +104,60 @@ const actions = ['read'];
 const delegatedCapability = zcapClient.delegate({
   capability, delegate, actions
 });
+```
+
+### Reading with a Delegated Capability
+
+```js
+const url = '/my-account/items/123';
+const capability = await getCapabilityFromDatabase({url}); // defined by your code
+
+// reading a URL using a zcap will result in an HTTP Response
+const response = await zcapClient.read({url, capability});
+
+// retrieve the JSON data
+const items = await response.json();
+```
+
+### Writing with a Delegated Capability
+
+```js
+const url = '/my-account/items';
+const item = {label: 'Widget'};
+const capability = await getCapabilityFromDatabase({url}); // defined by your code
+
+// writing a URL using a zcap will result in an HTTP Response
+const response = await zcapClient.write({url, capability, json: item});
+
+// process the response appropriately
+const writtenItem = await response.json();
+```
+
+### Invoking with a Root Capability
+
+```js
+const url = '/my-account/items';
+const item = {count: 12};
+
+// invoking a capability against a URL will result in an HTTP Response
+const response = await zcapClient.invoke({url, method: 'patch', json: item});
+
+// process the response appropriately
+const updatedItem = await response.json();
+```
+
+### Invoking with a Delegated Capability
+
+```js
+const url = '/my-account/items/123';
+const item = {count: 12};
+const capability = await getCapabilityFromDatabase({url}); // defined by your code
+
+// invoking a capability against a URL will result in an HTTP Response
+const response = await zcapClient.invoke({url, capability, method: 'patch', json: item});
+
+// process the response appropriately
+const updatedItem = await response.json();
 ```
 
 ## Contribute
