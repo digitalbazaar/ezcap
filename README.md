@@ -24,7 +24,14 @@ quickly and ensure that their client code is production-ready.
 
 ## Security
 
-TBD
+The security characteristics of this library are largely influenced by design
+that implementers make with respect to private key management. The security
+characteristics of the server that you communicate with using this library
+are largely dependent on how carefully the server manages zcap registrations,
+zcap delegations, and zcap checking. Bugs or failures related to key management,
+or enforcement of zcaps will lead to security failures. It is imperative that
+implementers audit their implementations, preferably by parties other than
+the implementer.
 
 ## Install
 
