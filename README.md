@@ -11,6 +11,7 @@
 - [Security](#security)
 - [Install](#install)
 - [Usage](#usage)
+- [API Reference](#api-reference)
 - [Contribute](#contribute)
 - [Commercial Support](#commercial-support)
 - [License](#license)
@@ -59,7 +60,7 @@ npm install
 ### Creating a Client
 
 ```js
-import {ZcapClient, getCapabilitySigners} from 'ezcap';
+import {ZcapClient} from 'ezcap';
 import didKey from 'did-method-key';
 const didKeyDriver = didKey.driver();
 
@@ -69,12 +70,8 @@ const baseUrl = 'https://zcap.example';
 // generate a DID Document and set of key pairs
 const {didDocument, keyPairs} = await didKeyDriver.generate();
 
-// extract the capability invocation and delegation signers
-const {invocationSigner, delegationSigner} = getCapabilitySigners({
-  didDocument, keyPairs});
-
 // create a new zcap client using the generated cryptographic material
-const zcapClient = new ZcapClient({baseUrl, invocationSigner, delegationSigner});
+const zcapClient = new ZcapClient({baseUrl, didDocument, keyPairs});
 ```
 
 ### Reading with a Root Capability
@@ -106,9 +103,10 @@ const writtenItem = await response.json();
 
 ```js
 const capability = 'https://zcap.example/foo';
-const delegate = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
+const targetDelegate =
+  'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const allowedActions = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, delegate, allowedActions});
+const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedActions});
 ```
 
 ### Reading with a Delegated Capability
@@ -159,11 +157,130 @@ const item = {count: 12};
 const capability = await getCapabilityFromDatabase({url}); // defined by your code
 
 // invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.invoke({url, capability, method: 'patch', json: item});
+const response = await zcapClient.request({url, capability, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
 ```
+
+## API Reference
+
+## Typedefs
+
+<dl>
+<dt><a href="#HttpsAgent">HttpsAgent</a> : <code>object</code></dt>
+<dd><p>An object that manages connection persistence and reuse for HTTPS requests.</p>
+</dd>
+<dt><a href="#ZcapClient">ZcapClient</a> ⇒ <code><a href="#ZcapClient">ZcapClient</a></code></dt>
+<dd><p>Creates a new ZcapClient instance that can be used to perform
+Authorization Capability (ZCAP) requests against HTTP URLs.</p>
+</dd>
+</dl>
+
+<a name="HttpsAgent"></a>
+
+## HttpsAgent : <code>object</code>
+An object that manages connection persistence and reuse for HTTPS requests.
+
+**Kind**: global typedef  
+**See**: https://nodejs.org/api/https.html#https_class_https_agent  
+<a name="ZcapClient"></a>
+
+## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
+Creates a new ZcapClient instance that can be used to perform
+Authorization Capability (ZCAP) requests against HTTP URLs.
+
+**Kind**: global typedef  
+**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.baseUrl | <code>string</code> | The base URL for the client to use   when building invocation request URLs. |
+| [options.didDocument] | <code>object</code> | A DID Document that contains   the `capabilityInvocation` and `capabilityDelegation` verification   relationships. `didDocument` and `keyPairs`, or `invocationSigner` and   `delegationSigner` must be provided. |
+| [options.keyPairs] | <code>Map</code> | A map of key pairs associated with   `didDocument` indexed by key pair. `didDocument` and `keyPairs`, or   `invocationSigner` and `delegationSigner` must be provided. |
+| [options.defaultHeaders] | <code>object</code> | The optional default HTTP   headers to include in every invocation request. |
+| [options.agent] | [<code>HttpsAgent</code>](#HttpsAgent) | An optional HttpsAgent to use to   when performing HTTPS requests. |
+| [options.invocationSigner] | <code>object</code> | An object with a   `.sign()` function and `id` and `controller` properties that will be   used for signing requests. `invocationSigner` and `delegationSigner`, or   `didDocument` and `keyPairs` must be provided. |
+| [options.delegationSigner] | <code>object</code> | An object with a   `.sign()` function and `id` and `controller` properties that will be   used for signing requests. `invocationSigner` and `delegationSigner`, or   `didDocument` and `keyPairs` must be provided. |
+
+
+* [ZcapClient](#ZcapClient) ⇒ [<code>ZcapClient</code>](#ZcapClient)
+    * [.delegate(options)](#ZcapClient+delegate) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.request(options)](#ZcapClient+request) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.read(options)](#ZcapClient+read) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.write(options)](#ZcapClient+write) ⇒ <code>Promise.&lt;object&gt;</code>
+
+<a name="ZcapClient+delegate"></a>
+
+### zcapClient.delegate(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Delegates an Authorization Capability to a target delegate.
+
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to a delegated
+  capability.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| [options.url] | <code>string</code> | The relative URL to invoke the   Authorization Capability against, aka the `invocationTarget`. Either  `url` or `capability` must be specified. |
+| [options.capability] | <code>string</code> | The parent capability to delegate.   Either `url` or `capability` must be specified. |
+| options.targetDelegate | <code>string</code> | The URL identifying the entity to   delegate to. |
+| [options.expires] | <code>string</code> | Optional expiration value for the   delegation. Default is 5 minutes after `Date.now()`. |
+| [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
+
+<a name="ZcapClient+request"></a>
+
+### zcapClient.request(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Performs an HTTP request given an Authorization Capability and
+a target URL.
+
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
+| [options.method] | <code>string</code> | The HTTP method to use when accessing   the resource. Default: 'get'. |
+| [options.action] | <code>string</code> | The capability action that is being   invoked. Default: 'read'. |
+| [options.headers] | <code>object</code> | The additional headers to sign and   send along with the HTTP request. Default: {}. |
+| options.json | <code>object</code> | The JSON object, if any, to send with the   request. |
+
+<a name="ZcapClient+read"></a>
+
+### zcapClient.read(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Convenience function that invokes an Authorization Capability against a
+given URL to perform a read operation.
+
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| options.headers | <code>object</code> | The additional headers to sign and   send along with the HTTP request. |
+| [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
+
+<a name="ZcapClient+write"></a>
+
+### zcapClient.write(options) ⇒ <code>Promise.&lt;object&gt;</code>
+Convenience function that invokes an Authorization Capability against a
+given URL to perform a write operation.
+
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| options.json | <code>object</code> | The JSON object, if any, to send with the   request. |
+| [options.headers] | <code>object</code> | The additional headers to sign and   send along with the HTTP request. |
+| [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
+
 
 ## Contribute
 

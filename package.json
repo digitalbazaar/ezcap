@@ -27,6 +27,8 @@
     "bnid": "^2.0.0",
     "esm": "^3.2.25",
     "http-signature-zcap-invoke": "^2.0.0",
+    "jsdoc": "^3.6.6",
+    "jsdoc-to-markdown": "^6.0.1",
     "jsonld-signatures": "^6.0.0",
     "ocapld": "^2.0.0"
   },
@@ -86,6 +88,7 @@
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm run test-node",
     "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=text-lcov npm run test-node > coverage.lcov",
     "coverage-report": "nyc report",
+    "generate-readme": "jsdoc2md -t readme-template.hbs lib/*.js > README.md",
     "lint": "eslint ."
   }
 }
