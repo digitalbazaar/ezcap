@@ -54,8 +54,8 @@ npm install
 * [Delegating a Capability](#delegating-a-capability)
 * [Reading with a Delegated Capability](#reading-with-a-delegated-capability)
 * [Writing with a Delegated Capability](#writing-with-a-delegated-capability)
-* [Invoking with a Root Capability](#invoking-a-capability)
-* [Invoking with a Delegated Capability](#invoking-a-capability)
+* [Requesting with a Root Capability](#requesting-with-a-root-capability)
+* [Requesting with a Delegated Capability](#requesting-with-a-delegated-capability)
 
 ### Creating a Client
 
@@ -136,20 +136,20 @@ const response = await zcapClient.write({url, capability, json: item});
 const writtenItem = await response.json();
 ```
 
-### Invoking with a Root Capability
+### Requesting with a Root Capability
 
 ```js
 const url = '/my-account/items';
 const item = {count: 12};
 
-// invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.invoke({url, method: 'patch', json: item});
+// send a request to a URL by invoking a capability
+const response = await zcapClient.request({url, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
 ```
 
-### Invoking with a Delegated Capability
+### Requesting with a Delegated Capability
 
 ```js
 const url = '/my-account/items/123';
