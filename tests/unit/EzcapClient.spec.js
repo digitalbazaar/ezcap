@@ -42,8 +42,7 @@ describe('ZcapClient', () => {
       delegatedZcap.parentCapability.should.equal('urn:zcap:' + url);
       delegatedZcap.controller.should.equal(delegate);
       delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
-      delegatedZcap.proof.capabilityChain.should.have.length(2);
-      //const delegatedZcap = zcapClient.delegate({capability, delegate});
+      delegatedZcap.proof.capabilityChain.should.have.length(1);
     });
   });
 });
