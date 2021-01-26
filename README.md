@@ -59,7 +59,7 @@ const didKeyDriver = didKey.driver();
 // the base URL for the zcap client to operate against
 const baseUrl = 'https://zcap.example';
 
-// generate a DID Document and set of keypairs
+// generate a DID Document and set of key pairs
 const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // extract the capability invocation and delegation signers
@@ -100,8 +100,8 @@ const writtenItem = await response.json();
 ```js
 const capability = 'https://zcap.example/foo';
 const delegate = 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
-const actions = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, delegate, actions});
+const allowedActions = ['read'];
+const delegatedCapability = zcapClient.delegate({capability, delegate, allowedActions});
 ```
 
 ### Reading with a Delegated Capability
