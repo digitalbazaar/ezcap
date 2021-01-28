@@ -23,31 +23,6 @@ interact with HTTP servers protected by zcap-based authorization. The library
 is configured with secure and sensible defaults to help developers get started
 quickly and ensure that their client code is production-ready.
 
-## Core Principles
-
-The ezcap library is opinionated in order to make using zcaps a pleasant
-experience for developers. To do this, it builds upon two fundamental
-principles:
-
-* Most systems using HTTP are REST-ful in nature; that property should be
-  used to our advantage.
-* Most systems REST-ful systems tend to center around reading and writing
-  resources.
-
-If these principles do not apply to your system, the
-[zcapld](https://github.com/digitalbazaar/zcapld) library might
-be a better, albeit more complex, solution for you.
-
-Looking at each of these core principles more closely will help explain how
-zcaps are a good fit for HTTP architectures. Let's take the first principle
-and break it down:
-
-> Most systems using HTTP are REST-ful in nature
-
-That typically means that most resource URLs are organized by collections and
-items. For example: `/<root-namespace>/<collection-id>/<item-id>`. In practice,
-this tends to look like `/my-account/components/1`.
-
 ## Security
 
 The security characteristics of this library are largely influenced by design
@@ -232,6 +207,53 @@ const updatedItem = await response.json();
 ```
 
 ## API Reference
+
+The ezcap approach is opinionated in order to make using zcaps a pleasant
+experience for developers. To do this, it makes two fundamental assumptions
+regarding the systems it interacts with:
+
+* The systems are HTTP-based and REST-ful in nature.
+* The REST-ful systems center around reading and writing resources.
+
+If these assumptions do not apply to your system, the
+[zcapld](https://github.com/digitalbazaar/zcapld) library might
+be a better, albeit more complex, solution for you.
+
+Looking at each of these core assumptions more closely will help explain how designing systems to these constraints make it much easier to think about
+zcaps. Let's take a look at the first assumption:
+
+> The systems are HTTP-based and REST-ful in nature.
+
+Many modern systems tend to have HTTP-based interfaces that are REST-ful in
+nature. That typically means that most resource URLs are organized by namespaces, collections, and items:
+`/<root-namespace>/<collection-id>/<item-id>`. In practice,
+this tends to manifest itself as URLs that look like
+`/my-account/things/1`. The ezcap approach maps the authorization model
+in a 1-to-1 way to the URL. Following along with the example, the root
+capability would then be `/my-account`, which you will typically create and
+have access to. You can then take that root capability and delegate access
+to things like `/my-account/things` to let entities you trust modify the
+`things` collection. You can also choose to be more specific and only
+delegate to `/my-account/things/1` to really lock down access. ezcap attempts
+to keep things very simple by mapping URL hierarchy to authorization scope.
+
+Now, let's examine the second assumption that makes things easier:
+
+> The REST-ful systems center around reading and writing resources.
+
+There is an incredible amount of flexibility that zcaps provide. You can
+define a variety of actions: read, write, bounce, atomicSwap, start, etc.
+However, all that flexibility adds complexity and one of the goals of ezcap
+is to reduce complexity to the point where the solution is good enough for
+80% of the use cases. A large amount of REST-ful interactions tend to
+revolve around reading and writing collections and the items in those
+collections. For this reason, there are only two actions that are exposed
+by default in ezcap: read and write. Keeping the number of actions to a
+bare minimum has allowed implementers to achieve very complex use cases with
+very simple code.
+
+These are the two assumptions that ezcap makes and with those two assumptions,
+80% of all use cases we've encountered are covered.
 
 {{>main}}
 
