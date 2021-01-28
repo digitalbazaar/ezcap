@@ -3,7 +3,7 @@
 ## 1.0.0 - 2021-01-??
 
 ### Added
-- Add .invoke()
+- Add .request()
 - Add .read() and .write()
 - Add .delegate()
 - add .getCapabilitySigners()
