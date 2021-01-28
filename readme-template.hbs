@@ -23,6 +23,31 @@ interact with HTTP servers protected by zcap-based authorization. The library
 is configured with secure and sensible defaults to help developers get started
 quickly and ensure that their client code is production-ready.
 
+## Core Principles
+
+The ezcap library is opinionated in order to make using zcaps a pleasant
+experience for developers. To do this, it builds upon two fundamental
+principles:
+
+* Most systems using HTTP are REST-ful in nature; that property should be
+  used to our advantage.
+* Most systems REST-ful systems tend to center around reading and writing
+  resources.
+
+If these principles do not apply to your system, the
+[zcapld](https://github.com/digitalbazaar/zcapld) library might
+be a better, albeit more complex, solution for you.
+
+Looking at each of these core principles more closely will help explain how
+zcaps are a good fit for HTTP architectures. Let's take the first principle
+and break it down:
+
+> Most systems using HTTP are REST-ful in nature
+
+That typically means that most resource URLs are organized by collections and
+items. For example: `/<root-namespace>/<collection-id>/<item-id>`. In practice,
+this tends to look like `/my-account/components/1`.
+
 ## Security
 
 The security characteristics of this library are largely influenced by design
@@ -59,6 +84,10 @@ npm install
 
 ### Creating a Client
 
+Creating a zcap client involves generating cryptographic key material and then
+using that key material to instantiate a client designed to operate on a
+specific base URL.
+
 ```js
 import {ZcapClient} from 'ezcap';
 import didKey from 'did-method-key';
@@ -76,6 +105,12 @@ const zcapClient = new ZcapClient({baseUrl, didDocument, keyPairs});
 
 ### Reading with a Root Capability
 
+Reading data from a URL using a capability is performed in a way that is
+very similar to using a regular HTTP client to perform an HTTP GET. Using
+a root capability means that your client has been directly authorized to access
+the URL, usually because it created the resource that is being accessed.
+The term "root" means that your client is the "root of authority".
+
 ```js
 const url = '/my-account/items';
 
@@ -87,6 +122,14 @@ const items = await response.json();
 ```
 
 ### Writing with a Root Capability
+
+Writing data to URL using a capability is performed in a way that is
+very similar to using a regular HTTP client to perform an HTTP POST. Using
+a root capability means that your client has been directly authorized to
+modify the resource at the URL, usually because it created the resource that is
+being written to. The term "root" means that your client is the "root of
+authority". In the example below, the server most likely registered the
+client as being the root authority for the `/my-account` path on the server.
 
 ```js
 const url = '/my-account/items';
@@ -101,8 +144,14 @@ const writtenItem = await response.json();
 
 ### Delegating a Capability
 
+Delegating a capability consists of the client authorizing another entity to
+use the capability. The example below uses a DID as the target for the
+delegation. The returned `delegatedCapability` would need to be transmitted
+to the entity identified by the delegation target so that they can use it
+to access the resource.
+
 ```js
-const capability = 'https://zcap.example/foo';
+const capability = 'https://zcap.example/my-account/items';
 const targetDelegate =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const allowedActions = ['read'];
@@ -110,6 +159,11 @@ const delegatedCapability = zcapClient.delegate({capability, targetDelegate, all
 ```
 
 ### Reading with a Delegated Capability
+
+Reading with a delegated capability is similar to reading with a root
+capability. The only difference is that the delegated capability needs to be
+retrieved from somewhere using application-specific code and then passed
+to the `read` method.
 
 ```js
 const url = '/my-account/items/123';
@@ -123,6 +177,12 @@ const items = await response.json();
 ```
 
 ### Writing with a Delegated Capability
+
+Writing with a delegated capability is similar to writing with a root
+capability. The only difference is that the delegated capability needs to be
+retrieved from somewhere using application-specific code and then passed
+to the `write` method.
+
 
 ```js
 const url = '/my-account/items';
@@ -138,6 +198,10 @@ const writtenItem = await response.json();
 
 ### Requesting with a Root Capability
 
+In the event that the server API does not operate using HTTP GET and HTTP POST,
+it is possible to create a zcap client request that uses other HTTP verbs. This
+is done by specifying the HTTP `method` to use.
+
 ```js
 const url = '/my-account/items';
 const item = {count: 12};
@@ -150,6 +214,10 @@ const updatedItem = await response.json();
 ```
 
 ### Requesting with a Delegated Capability
+
+Performing an HTTP request with a delegated capability is similar to
+doing the same with a root capability. The only difference is that the
+delegated capability needs to be retrieved from somewhere using application-specific code and then passed to the `request` method.
 
 ```js
 const url = '/my-account/items/123';
