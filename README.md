@@ -54,10 +54,14 @@ npm install
 * [Delegating a Capability](#delegating-a-capability)
 * [Reading with a Delegated Capability](#reading-with-a-delegated-capability)
 * [Writing with a Delegated Capability](#writing-with-a-delegated-capability)
-* [Invoking with a Root Capability](#invoking-a-capability)
-* [Invoking with a Delegated Capability](#invoking-a-capability)
+* [Requesting with a Root Capability](#requesting-with-a-root-capability)
+* [Requesting with a Delegated Capability](#requesting-with-a-delegated-capability)
 
 ### Creating a Client
+
+Creating a zcap client involves generating cryptographic key material and then
+using that key material to instantiate a client designed to operate on a
+specific base URL.
 
 ```js
 import {ZcapClient} from 'ezcap';
@@ -76,6 +80,12 @@ const zcapClient = new ZcapClient({baseUrl, didDocument, keyPairs});
 
 ### Reading with a Root Capability
 
+Reading data from a URL using a capability is performed in a way that is
+very similar to using a regular HTTP client to perform an HTTP GET. Using
+a root capability means that your client has been directly authorized to access
+the URL, usually because it created the resource that is being accessed.
+The term "root" means that your client is the "root of authority".
+
 ```js
 const url = '/my-account/items';
 
@@ -87,6 +97,14 @@ const items = await response.json();
 ```
 
 ### Writing with a Root Capability
+
+Writing data to URL using a capability is performed in a way that is
+very similar to using a regular HTTP client to perform an HTTP POST. Using
+a root capability means that your client has been directly authorized to
+modify the resource at the URL, usually because it created the resource that is
+being written to. The term "root" means that your client is the "root of
+authority". In the example below, the server most likely registered the
+client as being the root authority for the `/my-account` path on the server.
 
 ```js
 const url = '/my-account/items';
@@ -101,8 +119,14 @@ const writtenItem = await response.json();
 
 ### Delegating a Capability
 
+Delegating a capability consists of the client authorizing another entity to
+use the capability. The example below uses a DID as the target for the
+delegation. The returned `delegatedCapability` would need to be transmitted
+to the entity identified by the delegation target so that they can use it
+to access the resource.
+
 ```js
-const capability = 'https://zcap.example/foo';
+const capability = 'https://zcap.example/my-account/items';
 const targetDelegate =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const allowedActions = ['read'];
@@ -110,6 +134,11 @@ const delegatedCapability = zcapClient.delegate({capability, targetDelegate, all
 ```
 
 ### Reading with a Delegated Capability
+
+Reading with a delegated capability is similar to reading with a root
+capability. The only difference is that the delegated capability needs to be
+retrieved from somewhere using application-specific code and then passed
+to the `read` method.
 
 ```js
 const url = '/my-account/items/123';
@@ -124,6 +153,12 @@ const items = await response.json();
 
 ### Writing with a Delegated Capability
 
+Writing with a delegated capability is similar to writing with a root
+capability. The only difference is that the delegated capability needs to be
+retrieved from somewhere using application-specific code and then passed
+to the `write` method.
+
+
 ```js
 const url = '/my-account/items';
 const item = {label: 'Widget'};
@@ -136,20 +171,28 @@ const response = await zcapClient.write({url, capability, json: item});
 const writtenItem = await response.json();
 ```
 
-### Invoking with a Root Capability
+### Requesting with a Root Capability
+
+In the event that the server API does not operate using HTTP GET and HTTP POST,
+it is possible to create a zcap client request that uses other HTTP verbs. This
+is done by specifying the HTTP `method` to use.
 
 ```js
 const url = '/my-account/items';
 const item = {count: 12};
 
-// invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.invoke({url, method: 'patch', json: item});
+// send a request to a URL by invoking a capability
+const response = await zcapClient.request({url, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
 ```
 
-### Invoking with a Delegated Capability
+### Requesting with a Delegated Capability
+
+Performing an HTTP request with a delegated capability is similar to
+doing the same with a root capability. The only difference is that the
+delegated capability needs to be retrieved from somewhere using application-specific code and then passed to the `request` method.
 
 ```js
 const url = '/my-account/items/123';
@@ -165,6 +208,62 @@ const updatedItem = await response.json();
 
 ## API Reference
 
+The ezcap approach is opinionated in order to make using zcaps a pleasant
+experience for developers. To do this, it makes two fundamental assumptions
+regarding the systems it interacts with:
+
+* The systems are HTTP-based and REST-ful in nature.
+* The REST-ful systems center around reading and writing resources.
+
+If these assumptions do not apply to your system, the
+[zcapld](https://github.com/digitalbazaar/zcapld) library might
+be a better, albeit more complex, solution for you.
+
+Looking at each of these core assumptions more closely will help explain how designing systems to these constraints make it much easier to think about
+zcaps. Let's take a look at the first assumption:
+
+> The systems are HTTP-based and REST-ful in nature.
+
+Many modern systems tend to have HTTP-based interfaces that are REST-ful in
+nature. That typically means that most resource URLs are organized by namespaces, collections, and items:
+`/<root-namespace>/<collection-id>/<item-id>`. In practice,
+this tends to manifest itself as URLs that look like
+`/my-account/things/1`. The ezcap approach maps the authorization model
+in a 1-to-1 way to the URL. Following along with the example, the root
+capability would then be `/my-account`, which you will typically create and
+have access to. You can then take that root capability and delegate access
+to things like `/my-account/things` to let entities you trust modify the
+`things` collection. You can also choose to be more specific and only
+delegate to `/my-account/things/1` to really lock down access. ezcap attempts
+to keep things very simple by mapping URL hierarchy to authorization scope.
+
+Now, let's examine the second assumption that makes things easier:
+
+> The REST-ful systems center around reading and writing resources.
+
+There is an incredible amount of flexibility that zcaps provide. You can
+define a variety of actions: read, write, bounce, atomicSwap, start, etc.
+However, all that flexibility adds complexity and one of the goals of ezcap
+is to reduce complexity to the point where the solution is good enough for
+80% of the use cases. A large amount of REST-ful interactions tend to
+revolve around reading and writing collections and the items in those
+collections. For this reason, there are only two actions that are exposed
+by default in ezcap: read and write. Keeping the number of actions to a
+bare minimum has allowed implementers to achieve very complex use cases with
+very simple code.
+
+These are the two assumptions that ezcap makes and with those two assumptions,
+80% of all use cases we've encountered are covered.
+
+## Functions
+
+<dl>
+<dt><a href="#getCapabilitySigners">getCapabilitySigners(options)</a> ⇒ <code>object</code></dt>
+<dd><p>Retrieves the first set of capability invocation and delegation signers
+associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
+</dd>
+</dl>
+
 ## Typedefs
 
 <dl>
@@ -176,6 +275,22 @@ const updatedItem = await response.json();
 Authorization Capability (ZCAP) requests against HTTP URLs.</p>
 </dd>
 </dl>
+
+<a name="getCapabilitySigners"></a>
+
+## getCapabilitySigners(options) ⇒ <code>object</code>
+Retrieves the first set of capability invocation and delegation signers
+associated with the `didDocument` from the `keyPairs`.
+
+**Kind**: global function  
+**Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
+  associated with the didDocument.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.didDocument | <code>string</code> | A DID Document containing   verification relationships for capability invocation and delegation. |
+| options.keyPairs | <code>string</code> | A map containing keypairs indexed by   key ID. |
 
 <a name="HttpsAgent"></a>
 
@@ -226,6 +341,7 @@ Delegates an Authorization Capability to a target delegate.
 | [options.url] | <code>string</code> | The relative URL to invoke the   Authorization Capability against, aka the `invocationTarget`. Either  `url` or `capability` must be specified. |
 | [options.capability] | <code>string</code> | The parent capability to delegate.   Either `url` or `capability` must be specified. |
 | options.targetDelegate | <code>string</code> | The URL identifying the entity to   delegate to. |
+| [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `url` if `capability` is not provided, or   `capability.invocationTarget` if `capability` is provided. |
 | [options.expires] | <code>string</code> | Optional expiration value for the   delegation. Default is 5 minutes after `Date.now()`. |
 | [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
 
