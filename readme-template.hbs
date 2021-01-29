@@ -26,13 +26,13 @@ quickly and ensure that their client code is production-ready.
 ## Security
 
 The security characteristics of this library are largely influenced by design
-that implementers make with respect to private key management. The security
-characteristics of the server that you communicate with using this library
-are largely dependent on how carefully the server manages zcap registrations,
-zcap delegations, and zcap checking. Bugs or failures related to key management,
-or enforcement of zcaps will lead to security failures. It is imperative that
-implementers audit their implementations, preferably by parties other than
-the implementer.
+decisions made by client and server software. For clients, implementers should
+pay particular attention to secure private key management. For servers, security
+characteristics are largely dependent on how carefully the server manages zcap
+registrations, zcap invocations, and zcap delegations. Bugs or failures related
+to client key management, or server zcap validity checking will lead to security
+failures. It is imperative that implementers audit their implementations,
+preferably via parties other than the implementer.
 
 ## Install
 
