@@ -46,7 +46,8 @@ describe('ZcapClient', () => {
         'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
       const delegatedZcap = await zcapClient.delegate({url, targetDelegate});
 
-      delegatedZcap.parentCapability.should.equal('urn:zcap:' + url);
+      delegatedZcap.parentCapability.should.equal(
+        'urn:zcap:root:' + encodeURIComponent(url));
       delegatedZcap.controller.should.equal(targetDelegate);
       delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
       delegatedZcap.proof.capabilityChain.should.have.length(1);
