@@ -26,13 +26,13 @@ quickly and ensure that their client code is production-ready.
 ## Security
 
 The security characteristics of this library are largely influenced by design
-that implementers make with respect to private key management. The security
-characteristics of the server that you communicate with using this library
-are largely dependent on how carefully the server manages zcap registrations,
-zcap delegations, and zcap checking. Bugs or failures related to key management,
-or enforcement of zcaps will lead to security failures. It is imperative that
-implementers audit their implementations, preferably by parties other than
-the implementer.
+decisions made by client and server software. For clients, implementers should
+pay particular attention to secure private key management. For servers, security
+characteristics are largely dependent on how carefully the server manages zcap
+registrations, zcap invocations, and zcap delegations. Bugs or failures related
+to client key management, or server zcap validity checking will lead to security
+failures. It is imperative that implementers audit their implementations,
+preferably via parties other than the implementer.
 
 ## Install
 
@@ -262,6 +262,9 @@ These are the two assumptions that ezcap makes and with those two assumptions,
 <dd><p>Retrieves the first set of capability invocation and delegation signers
 associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
 </dd>
+<dt><a href="#generateZcapUri">generateZcapUri(options)</a> ⇒ <code>string</code></dt>
+<dd><p>Generate a zcap URI given a root capability URL or a delegated flag.</p>
+</dd>
 </dl>
 
 ## Typedefs
@@ -272,7 +275,8 @@ associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
 </dd>
 <dt><a href="#ZcapClient">ZcapClient</a> ⇒ <code><a href="#ZcapClient">ZcapClient</a></code></dt>
 <dd><p>Creates a new ZcapClient instance that can be used to perform
-Authorization Capability (ZCAP) requests against HTTP URLs.</p>
+requests against HTTP URLs that are authorized via
+Authorization Capabilities (ZCAPs).</p>
 </dd>
 </dl>
 
@@ -292,6 +296,19 @@ associated with the `didDocument` from the `keyPairs`.
 | options.didDocument | <code>string</code> | A DID Document containing   verification relationships for capability invocation and delegation. |
 | options.keyPairs | <code>string</code> | A map containing keypairs indexed by   key ID. |
 
+<a name="generateZcapUri"></a>
+
+## generateZcapUri(options) ⇒ <code>string</code>
+Generate a zcap URI given a root capability URL or a delegated flag.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - - A zcap URI.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| [options.url] | <code>string</code> | Optional URL identifying the root capability. |
+
 <a name="HttpsAgent"></a>
 
 ## HttpsAgent : <code>object</code>
@@ -303,7 +320,8 @@ An object that manages connection persistence and reuse for HTTPS requests.
 
 ## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
 Creates a new ZcapClient instance that can be used to perform
-Authorization Capability (ZCAP) requests against HTTP URLs.
+requests against HTTP URLs that are authorized via
+Authorization Capabilities (ZCAPs).
 
 **Kind**: global typedef  
 **Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
