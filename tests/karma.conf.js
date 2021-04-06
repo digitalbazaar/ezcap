@@ -55,7 +55,7 @@ module.exports = function(config) {
       mode: 'development',
       node: {
         Buffer: false,
-        crypto: false,
+        crypto: 'empty',
         setImmediate: false,
         util: false
       }
