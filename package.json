@@ -23,7 +23,7 @@
   ],
   "module": "lib/main.js",
   "dependencies": {
-    "@digitalbazaar/ed25519-signature-2020": "digitalbazaar/ed25519-signature-2020#jsigs-fix-136",
+    "@digitalbazaar/ed25519-signature-2020": "^2.0.0",
     "@digitalbazaar/http-client": "^1.0.0",
     "bnid": "^2.0.0",
     "esm": "^3.2.25",
