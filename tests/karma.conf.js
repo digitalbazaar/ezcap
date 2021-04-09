@@ -53,11 +53,11 @@ module.exports = function(config) {
     webpack: {
       devtool: 'inline-source-map',
       mode: 'development',
-      node: {
-        Buffer: false,
-        crypto: 'empty',
-        setImmediate: false,
-        util: false
+      resolve: {
+        fallback: {
+          crypto: false,
+          url: false,
+        }
       }
     }
   });
