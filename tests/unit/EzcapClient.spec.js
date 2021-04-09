@@ -3,7 +3,7 @@
  */
 import {getCapabilitySigners, ZcapClient} from '../../';
 import chai from 'chai';
-import didKey from 'did-method-key';
+import * as didKey from '@digitalbazaar/did-method-key';
 import dirtyChai from 'dirty-chai';
 
 chai.use(dirtyChai);
