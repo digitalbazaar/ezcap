@@ -4,9 +4,7 @@
 import {getCapabilitySigners, ZcapClient} from '../../';
 import chai from 'chai';
 import * as didKey from '@digitalbazaar/did-method-key';
-import dirtyChai from 'dirty-chai';
 
-chai.use(dirtyChai);
 chai.should();
 const {expect} = chai;
 const didKeyDriver = didKey.driver();
@@ -18,7 +16,7 @@ describe('ZcapClient', () => {
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const zcapClient = new ZcapClient({baseUrl, didDocument, keyPairs});
 
-      expect(zcapClient).to.exist();
+      expect(zcapClient).to.exist;
     });
     it('should create an ZcapClient using signers', async () => {
       const baseUrl = 'https://zcap.example';
@@ -29,7 +27,7 @@ describe('ZcapClient', () => {
         baseUrl, invocationSigner, delegationSigner
       });
 
-      expect(zcapClient).to.exist();
+      expect(zcapClient).to.exist;
     });
     it('should delegate a zcap', async () => {
       const baseUrl = 'https://zcap.example';
@@ -39,7 +37,7 @@ describe('ZcapClient', () => {
       const zcapClient = new ZcapClient({
         baseUrl, invocationSigner, delegationSigner
       });
-      expect(zcapClient).to.exist();
+      expect(zcapClient).to.exist;
 
       const url = baseUrl + '/items';
       const targetDelegate =
