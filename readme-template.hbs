@@ -129,8 +129,8 @@ to access the resource.
 const capability = 'https://zcap.example/my-account/items';
 const targetDelegate =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
-const allowedAction = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedAction});
+const allowedActions = ['read'];
+const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedActions});
 ```
 
 ### Reading with a Delegated Capability

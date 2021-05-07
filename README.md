@@ -129,8 +129,8 @@ to access the resource.
 const capability = 'https://zcap.example/my-account/items';
 const targetDelegate =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
-const allowedAction = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedAction});
+const allowedActions = ['read'];
+const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedActions});
 ```
 
 ### Reading with a Delegated Capability
@@ -361,7 +361,7 @@ Delegates an Authorization Capability to a target delegate.
 | options.targetDelegate | <code>string</code> | The URL identifying the entity to   delegate to. |
 | [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `url` if `capability` is not provided, or   `capability.invocationTarget` if `capability` is provided. |
 | [options.expires] | <code>string</code> | Optional expiration value for the   delegation. Default is 5 minutes after `Date.now()`. |
-| [options.allowedAction] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
+| [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
 
 <a name="ZcapClient+request"></a>
 
