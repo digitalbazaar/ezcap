@@ -24,7 +24,7 @@
   "module": "lib/main.js",
   "dependencies": {
     "@digitalbazaar/http-client": "^1.0.0",
-    "@digitalbazaar/zcapld": "^4.0.0",
+    "@digitalbazaar/zcapld": "digitalbazaar/zcapld#doc-loader",
     "bnid": "^2.0.0",
     "esm": "^3.2.25",
     "http-signature-zcap-invoke": "^3.0.0",
