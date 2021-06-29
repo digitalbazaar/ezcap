@@ -66,6 +66,7 @@ specific base URL.
 ```js
 import {ZcapClient} from 'ezcap';
 import * as didKey from '@digitalbazaar/did-method-key';
+import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 const didKeyDriver = didKey.driver();
 
 // the base URL for the zcap client to operate against
@@ -75,7 +76,9 @@ const baseUrl = 'https://zcap.example';
 const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // create a new zcap client using the generated cryptographic material
-const zcapClient = new ZcapClient({baseUrl, didDocument, keyPairs});
+const zcapClient = new ZcapClient({
+  baseUrl, didDocument, keyPairs, suiteClass: Ed25519Signature2020
+});
 ```
 
 ### Reading with a Root Capability
