@@ -65,7 +65,7 @@ specific base URL.
 
 ```js
 import {ZcapClient} from 'ezcap';
-import didKey from 'did-method-key';
+import * as didKey from '@digitalbazaar/did-method-key';
 const didKeyDriver = didKey.driver();
 
 // the base URL for the zcap client to operate against
@@ -286,9 +286,9 @@ Authorization Capabilities (ZCAPs).</p>
 Retrieves the first set of capability invocation and delegation signers
 associated with the `didDocument` from the `keyPairs`.
 
-**Kind**: global function  
+**Kind**: global function
 **Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
-  associated with the didDocument.  
+  associated with the didDocument.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -301,8 +301,8 @@ associated with the `didDocument` from the `keyPairs`.
 ## generateZcapUri(options) ⇒ <code>string</code>
 Generate a zcap URI given a root capability URL or a delegated flag.
 
-**Kind**: global function  
-**Returns**: <code>string</code> - - A zcap URI.  
+**Kind**: global function
+**Returns**: <code>string</code> - - A zcap URI.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -314,8 +314,8 @@ Generate a zcap URI given a root capability URL or a delegated flag.
 ## HttpsAgent : <code>object</code>
 An object that manages connection persistence and reuse for HTTPS requests.
 
-**Kind**: global typedef  
-**See**: https://nodejs.org/api/https.html#https_class_https_agent  
+**Kind**: global typedef
+**See**: https://nodejs.org/api/https.html#https_class_https_agent
 <a name="ZcapClient"></a>
 
 ## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
@@ -323,8 +323,8 @@ Creates a new ZcapClient instance that can be used to perform
 requests against HTTP URLs that are authorized via
 Authorization Capabilities (ZCAPs).
 
-**Kind**: global typedef  
-**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
+**Kind**: global typedef
+**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -349,9 +349,9 @@ Authorization Capabilities (ZCAPs).
 ### zcapClient.delegate(options) ⇒ <code>Promise.&lt;object&gt;</code>
 Delegates an Authorization Capability to a target delegate.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
 **Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to a delegated
-  capability.  
+  capability.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -369,8 +369,8 @@ Delegates an Authorization Capability to a target delegate.
 Performs an HTTP request given an Authorization Capability and
 a target URL.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -388,8 +388,8 @@ a target URL.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a read operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -404,8 +404,8 @@ given URL to perform a read operation.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a write operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
