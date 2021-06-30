@@ -141,8 +141,8 @@ retrieved from somewhere using application-specific code and then passed
 to the `read` method.
 
 ```js
-// defined by your code
 const url = 'https://zcap.example/my-account/items/123';
+// defined by your code
 const capability = await getCapabilityFromDatabase({url, /* other */});
 
 // reading a URL using a zcap will result in an HTTP Response; the
@@ -165,8 +165,8 @@ to the `write` method.
 
 ```js
 const item = {label: 'Widget'};
-// defined by your code
 const url = 'https://zcap.example/my-account/items';
+// defined by your code
 const capability = await getCapabilityFromDatabase({url, /* other */});
 
 // writing a URL using a zcap will result in an HTTP Response; the
@@ -203,10 +203,9 @@ doing the same with a root capability. The only difference is that the
 delegated capability needs to be retrieved from somewhere using application-specific code and then passed to the `request` method.
 
 ```js
-// defined by your code
 const item = {count: 12};
-// defined by your code
 const url = 'https://zcap.example/my-account/items/123';
+// defined by your code
 const capability = await getCapabilityFromDatabase({url, /* other */});
 
 // invoking a capability against a URL will result in an HTTP Response; the
