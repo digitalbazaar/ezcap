@@ -69,15 +69,12 @@ import * as didKey from '@digitalbazaar/did-method-key';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 const didKeyDriver = didKey.driver();
 
-// the base URL for the zcap client to operate against
-const baseUrl = 'https://zcap.example';
-
 // generate a DID Document and set of key pairs
 const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // create a new zcap client using the generated cryptographic material
 const zcapClient = new ZcapClient({
-  baseUrl, didDocument, keyPairs, suiteClass: Ed25519Signature2020
+  didDocument, keyPairs, suiteClass: Ed25519Signature2020
 });
 ```
 
@@ -90,7 +87,7 @@ the URL, usually because it created the resource that is being accessed.
 The term "root" means that your client is the "root of authority".
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 
 // reading a URL using a zcap will result in an HTTP Response
 const response = await zcapClient.read({url});
@@ -110,7 +107,7 @@ authority". In the example below, the server most likely registered the
 client as being the root authority for the `/my-account` path on the server.
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 const item = {label: 'Widget'};
 
 // writing a URL using a zcap will result in an HTTP Response
@@ -144,11 +141,15 @@ retrieved from somewhere using application-specific code and then passed
 to the `read` method.
 
 ```js
-const url = '/my-account/items/123';
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items/123';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// reading a URL using a zcap will result in an HTTP Response
-const response = await zcapClient.read({url, capability});
+// reading a URL using a zcap will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.read({capability});
 
 // retrieve the JSON data
 const items = await response.json();
@@ -163,12 +164,16 @@ to the `write` method.
 
 
 ```js
-const url = '/my-account/items';
 const item = {label: 'Widget'};
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// writing a URL using a zcap will result in an HTTP Response
-const response = await zcapClient.write({url, capability, json: item});
+// writing a URL using a zcap will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.write({capability, json: item});
 
 // process the response appropriately
 const writtenItem = await response.json();
@@ -181,7 +186,7 @@ it is possible to create a zcap client request that uses other HTTP verbs. This
 is done by specifying the HTTP `method` to use.
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 const item = {count: 12};
 
 // send a request to a URL by invoking a capability
@@ -198,12 +203,18 @@ doing the same with a root capability. The only difference is that the
 delegated capability needs to be retrieved from somewhere using application-specific code and then passed to the `request` method.
 
 ```js
-const url = '/my-account/items/123';
+// defined by your code
 const item = {count: 12};
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items/123';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.request({url, capability, method: 'patch', json: item});
+// invoking a capability against a URL will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.request(
+  {capability, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
@@ -294,9 +305,9 @@ Authorization Capabilities (ZCAPs).</p>
 Retrieves the first set of capability invocation and delegation signers
 associated with the `didDocument` from the `keyPairs`.
 
-**Kind**: global function  
+**Kind**: global function
 **Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
-  associated with the didDocument.  
+  associated with the didDocument.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -309,8 +320,8 @@ associated with the `didDocument` from the `keyPairs`.
 ## generateZcapUri(options) ⇒ <code>string</code>
 Generate a zcap URI given a root capability URL or a delegated flag.
 
-**Kind**: global function  
-**Returns**: <code>string</code> - - A zcap URI.  
+**Kind**: global function
+**Returns**: <code>string</code> - - A zcap URI.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -322,8 +333,8 @@ Generate a zcap URI given a root capability URL or a delegated flag.
 ## HttpsAgent : <code>object</code>
 An object that manages connection persistence and reuse for HTTPS requests.
 
-**Kind**: global typedef  
-**See**: https://nodejs.org/api/https.html#https_class_https_agent  
+**Kind**: global typedef
+**See**: https://nodejs.org/api/https.html#https_class_https_agent
 <a name="LinkedDataSignatureSuiteClass"></a>
 
 ## LinkedDataSignatureSuiteClass : <code>object</code>
@@ -331,7 +342,7 @@ An class that can be instantiated to create a suite capable of generating a
 Linked Data Signature. Its constructor must receive a `signer` instance
 that includes `.sign()` function and `id` and `controller` properties.
 
-**Kind**: global typedef  
+**Kind**: global typedef
 <a name="ZcapClient"></a>
 
 ## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
@@ -339,13 +350,12 @@ Creates a new ZcapClient instance that can be used to perform
 requests against HTTP URLs that are authorized via
 Authorization Capabilities (ZCAPs).
 
-**Kind**: global typedef  
-**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
+**Kind**: global typedef
+**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.baseUrl | <code>string</code> | The base URL for the client to use   when building invocation request URLs. |
 | [options.didDocument] | <code>object</code> | A DID Document that contains   `capabilityInvocation` and `capabilityDelegation` verification   relationships; `didDocument` and `keyPairs`, or `invocationSigner` and   `delegationSigner` must be provided in order to invoke or delegate   zcaps, respectively. |
 | [options.keyPairs] | <code>Map</code> | A map of key pairs associated with   `didDocument` indexed by key pair; `didDocument` and `keyPairs`, or   `invocationSigner` and `delegationSigner` must be provided in order to    invoke or delegate zcaps, respectively. |
 | [options.defaultHeaders] | <code>object</code> | The optional default HTTP   headers to include in every invocation request. |
@@ -367,14 +377,14 @@ Authorization Capabilities (ZCAPs).
 ### zcapClient.delegate(options) ⇒ <code>Promise.&lt;object&gt;</code>
 Delegates an Authorization Capability to a target delegate.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
 **Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to a delegated
-  capability.  
+  capability.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| [options.url] | <code>string</code> | The relative URL to invoke the   Authorization Capability against, aka the `invocationTarget`. Either  `url` or `capability` must be specified. |
+| [options.url] | <code>string</code> | The URL to invoke the   Authorization Capability against, aka the `invocationTarget`. Either  `url` or `capability` must be specified. |
 | [options.capability] | <code>string</code> | The parent capability to delegate.   Either `url` or `capability` must be specified. |
 | options.targetDelegate | <code>string</code> | The URL identifying the entity to   delegate to. |
 | [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `url`. |
@@ -387,13 +397,13 @@ Delegates an Authorization Capability to a target delegate.
 Performs an HTTP request given an Authorization Capability and
 a target URL.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| options.url | <code>string</code> | The URL to invoke the   Authorization Capability against. |
 | [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
 | [options.method] | <code>string</code> | The HTTP method to use when accessing   the resource. Default: 'get'. |
 | [options.action] | <code>string</code> | The capability action that is being   invoked. Default: 'read'. |
@@ -406,13 +416,13 @@ a target URL.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a read operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| options.url | <code>string</code> | The URL to invoke the   Authorization Capability against. |
 | options.headers | <code>object</code> | The additional headers to sign and   send along with the HTTP request. |
 | [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
 
@@ -422,13 +432,13 @@ given URL to perform a read operation.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a write operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.url | <code>string</code> | The relative URL to invoke the   Authorization Capability against. |
+| options.url | <code>string</code> | The URL to invoke the   Authorization Capability against. |
 | options.json | <code>object</code> | The JSON object, if any, to send with the   request. |
 | [options.headers] | <code>object</code> | The additional headers to sign and   send along with the HTTP request. |
 | [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |

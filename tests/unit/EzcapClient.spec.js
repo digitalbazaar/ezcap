@@ -13,39 +13,36 @@ const didKeyDriver = didKey.driver();
 describe('ZcapClient', () => {
   describe('constructor', () => {
     it('should create an ZcapClient using a didDocument', async () => {
-      const baseUrl = 'https://zcap.example';
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const zcapClient = new ZcapClient({
-        baseUrl, didDocument, keyPairs,
-        SuiteClass: Ed25519Signature2020
+        SuiteClass: Ed25519Signature2020,
+        didDocument, keyPairs
       });
 
       expect(zcapClient).to.exist;
     });
     it('should create an ZcapClient using signers', async () => {
-      const baseUrl = 'https://zcap.example';
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const {invocationSigner, delegationSigner} = getCapabilitySigners({
         didDocument, keyPairs});
       const zcapClient = new ZcapClient({
-        baseUrl, invocationSigner, delegationSigner,
-        SuiteClass: Ed25519Signature2020
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner, delegationSigner
       });
 
       expect(zcapClient).to.exist;
     });
     it('should delegate a root zcap', async () => {
-      const baseUrl = 'https://zcap.example';
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const {invocationSigner, delegationSigner} = getCapabilitySigners({
         didDocument, keyPairs});
       const zcapClient = new ZcapClient({
-        baseUrl, invocationSigner, delegationSigner,
-        SuiteClass: Ed25519Signature2020
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner, delegationSigner
       });
       expect(zcapClient).to.exist;
 
-      const url = baseUrl + '/items';
+      const url = 'https://zcap.example/items';
       const targetDelegate =
         'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
       const delegatedZcap = await zcapClient.delegate({url, targetDelegate});
@@ -57,20 +54,19 @@ describe('ZcapClient', () => {
       delegatedZcap.proof.capabilityChain.should.have.length(1);
     });
     it('should delegate a deeper zcap chain', async () => {
-      const baseUrl = 'https://zcap.example';
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const {invocationSigner, delegationSigner} = getCapabilitySigners({
         didDocument, keyPairs});
       const zcapClient = new ZcapClient({
-        baseUrl, invocationSigner, delegationSigner,
-        SuiteClass: Ed25519Signature2020
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner, delegationSigner
       });
       expect(zcapClient).to.exist;
 
       // first delegate root zcap
       let delegationDepth1;
       {
-        const url = baseUrl + '/items';
+        const url = 'https://zcap.example/items';
         // delegate to self to allow deeper delegation without needing to
         // create another entity
         const targetDelegate = didDocument.id;

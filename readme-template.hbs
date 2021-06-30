@@ -69,15 +69,12 @@ import * as didKey from '@digitalbazaar/did-method-key';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 const didKeyDriver = didKey.driver();
 
-// the base URL for the zcap client to operate against
-const baseUrl = 'https://zcap.example';
-
 // generate a DID Document and set of key pairs
 const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // create a new zcap client using the generated cryptographic material
 const zcapClient = new ZcapClient({
-  baseUrl, didDocument, keyPairs, suiteClass: Ed25519Signature2020
+  didDocument, keyPairs, suiteClass: Ed25519Signature2020
 });
 ```
 
@@ -90,7 +87,7 @@ the URL, usually because it created the resource that is being accessed.
 The term "root" means that your client is the "root of authority".
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 
 // reading a URL using a zcap will result in an HTTP Response
 const response = await zcapClient.read({url});
@@ -110,7 +107,7 @@ authority". In the example below, the server most likely registered the
 client as being the root authority for the `/my-account` path on the server.
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 const item = {label: 'Widget'};
 
 // writing a URL using a zcap will result in an HTTP Response
@@ -144,11 +141,15 @@ retrieved from somewhere using application-specific code and then passed
 to the `read` method.
 
 ```js
-const url = '/my-account/items/123';
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items/123';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// reading a URL using a zcap will result in an HTTP Response
-const response = await zcapClient.read({url, capability});
+// reading a URL using a zcap will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.read({capability});
 
 // retrieve the JSON data
 const items = await response.json();
@@ -163,12 +164,16 @@ to the `write` method.
 
 
 ```js
-const url = '/my-account/items';
 const item = {label: 'Widget'};
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// writing a URL using a zcap will result in an HTTP Response
-const response = await zcapClient.write({url, capability, json: item});
+// writing a URL using a zcap will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.write({capability, json: item});
 
 // process the response appropriately
 const writtenItem = await response.json();
@@ -181,7 +186,7 @@ it is possible to create a zcap client request that uses other HTTP verbs. This
 is done by specifying the HTTP `method` to use.
 
 ```js
-const url = '/my-account/items';
+const url = 'https://zcap.example/my-account/items';
 const item = {count: 12};
 
 // send a request to a URL by invoking a capability
@@ -198,12 +203,18 @@ doing the same with a root capability. The only difference is that the
 delegated capability needs to be retrieved from somewhere using application-specific code and then passed to the `request` method.
 
 ```js
-const url = '/my-account/items/123';
+// defined by your code
 const item = {count: 12};
-const capability = await getCapabilityFromDatabase({url}); // defined by your code
+// defined by your code
+const url = 'https://zcap.example/my-account/items/123';
+const capability = await getCapabilityFromDatabase({url, /* other */});
 
-// invoking a capability against a URL will result in an HTTP Response
-const response = await zcapClient.request({url, capability, method: 'patch', json: item});
+// invoking a capability against a URL will result in an HTTP Response; the
+// `invocationTarget` from the capability provides the URL if one is not
+// specified; if a URL is specified, the capability's invocation target
+// MUST be a RESTful prefix of or equivalent to the URL
+const response = await zcapClient.request(
+  {capability, method: 'patch', json: item});
 
 // process the response appropriately
 const updatedItem = await response.json();
