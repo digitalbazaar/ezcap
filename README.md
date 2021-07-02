@@ -143,7 +143,7 @@ to the `read` method.
 ```js
 const url = 'https://zcap.example/my-account/items/123';
 // defined by your code
-const capability = await getCapabilityFromDatabase({url, /* other */});
+const capability = await getCapabilityFromDatabase({url});
 
 // reading a URL using a zcap will result in an HTTP Response; the
 // `invocationTarget` from the capability provides the URL if one is not
@@ -167,7 +167,7 @@ to the `write` method.
 const item = {label: 'Widget'};
 const url = 'https://zcap.example/my-account/items';
 // defined by your code
-const capability = await getCapabilityFromDatabase({url, /* other */});
+const capability = await getCapabilityFromDatabase({url});
 
 // writing a URL using a zcap will result in an HTTP Response; the
 // `invocationTarget` from the capability provides the URL if one is not
@@ -206,7 +206,7 @@ delegated capability needs to be retrieved from somewhere using application-spec
 const item = {count: 12};
 const url = 'https://zcap.example/my-account/items/123';
 // defined by your code
-const capability = await getCapabilityFromDatabase({url, /* other */});
+const capability = await getCapabilityFromDatabase({url});
 
 // invoking a capability against a URL will result in an HTTP Response; the
 // `invocationTarget` from the capability provides the URL if one is not
