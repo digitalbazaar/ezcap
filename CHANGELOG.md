@@ -1,6 +1,6 @@
-# ezcap Changelog
+# @digitalbazaar/ezcap Changelog
 
-## 1.0.0 - 2021-01-??
+## 1.0.0 - 2021-xx-xx
 
 ### Added
 - Add .request()

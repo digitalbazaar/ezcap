@@ -64,7 +64,7 @@ using that key material to instantiate a client designed to operate on a
 specific base URL.
 
 ```js
-import {ZcapClient} from 'ezcap';
+import {ZcapClient} from '@digitalbazaar/ezcap';
 import * as didKey from '@digitalbazaar/did-method-key';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
 const didKeyDriver = didKey.driver();
