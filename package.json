@@ -23,7 +23,7 @@
   ],
   "module": "lib/main.js",
   "dependencies": {
-    "@digitalbazaar/http-client": "^1.0.0",
+    "@digitalbazaar/http-client": "^1.2.0",
     "@digitalbazaar/zcapld": "^5.1.0",
     "bnid": "^2.0.0",
     "esm": "^3.2.25",
