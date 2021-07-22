@@ -1,10 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 1.0.0 - 2021-xx-xx
+## 1.0.0 - 2021-07-22
 
 ### Added
-- Add .request()
-- Add .read() and .write()
-- Add .delegate()
-- add .getCapabilitySigners()
-- Add initial documentation
+- Initial release, see individual commits for history.
