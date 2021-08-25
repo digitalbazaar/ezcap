@@ -74,7 +74,7 @@ const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // create a new zcap client using the generated cryptographic material
 const zcapClient = new ZcapClient({
-  didDocument, keyPairs, suiteClass: Ed25519Signature2020
+  didDocument, keyPairs, SuiteClass: Ed25519Signature2020
 });
 ```
 
