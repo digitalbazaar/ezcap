@@ -43,15 +43,15 @@ describe('ZcapClient', () => {
       expect(zcapClient).to.exist;
 
       const url = 'https://zcap.example/items';
-      const targetDelegate =
+      const controller =
         'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
       const delegatedZcap = await zcapClient.delegate({
-        invocationTarget: url, targetDelegate
+        invocationTarget: url, controller
       });
 
       delegatedZcap.parentCapability.should.equal(
         'urn:zcap:root:' + encodeURIComponent(url));
-      delegatedZcap.controller.should.equal(targetDelegate);
+      delegatedZcap.controller.should.equal(controller);
       delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
       delegatedZcap.proof.capabilityChain.should.have.length(1);
     });
@@ -71,13 +71,13 @@ describe('ZcapClient', () => {
         const url = 'https://zcap.example/items';
         // delegate to self to allow deeper delegation without needing to
         // create another entity
-        const targetDelegate = didDocument.id;
+        const controller = didDocument.id;
         const delegatedZcap = await zcapClient.delegate(
-          {invocationTarget: url, targetDelegate});
+          {invocationTarget: url, controller});
 
         delegatedZcap.parentCapability.should.equal(
           'urn:zcap:root:' + encodeURIComponent(url));
-        delegatedZcap.controller.should.equal(targetDelegate);
+        delegatedZcap.controller.should.equal(controller);
         delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
         delegatedZcap.proof.capabilityChain.should.have.length(1);
 
@@ -89,12 +89,12 @@ describe('ZcapClient', () => {
       {
         // delegate to self to allow deeper delegation without needing to
         // create another entity
-        const targetDelegate = didDocument.id;
+        const controller = didDocument.id;
         const delegatedZcap = await zcapClient.delegate(
-          {capability: delegationDepth1, targetDelegate});
+          {capability: delegationDepth1, controller});
 
         delegatedZcap.parentCapability.should.equal(delegationDepth1.id);
-        delegatedZcap.controller.should.equal(targetDelegate);
+        delegatedZcap.controller.should.equal(controller);
         delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
         delegatedZcap.proof.capabilityChain.should.have.length(2);
 
@@ -103,13 +103,13 @@ describe('ZcapClient', () => {
 
       // now delegate zcap again, creating a deeper chain
       {
-        const targetDelegate =
+        const controller =
           'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
         const delegatedZcap = await zcapClient.delegate(
-          {capability: delegationDepth2, targetDelegate});
+          {capability: delegationDepth2, controller});
 
         delegatedZcap.parentCapability.should.equal(delegationDepth2.id);
-        delegatedZcap.controller.should.equal(targetDelegate);
+        delegatedZcap.controller.should.equal(controller);
         delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
         delegatedZcap.proof.capabilityChain.should.have.length(3);
       }
