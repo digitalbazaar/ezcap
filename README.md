@@ -126,11 +126,12 @@ to the entity identified by the delegation target so that they can use it
 to access the resource.
 
 ```js
-const capability = 'https://zcap.example/my-account/items';
-const targetDelegate =
+const invocationTarget = 'https://zcap.example/my-account/items';
+const controller =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const allowedActions = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedActions});
+const delegatedCapability = zcapClient.delegate(
+  {invocationTarget, controller, allowedActions});
 ```
 
 ### Reading with a Delegated Capability
@@ -383,10 +384,9 @@ Delegates an Authorization Capability to a target delegate.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| [options.url] | <code>string</code> | The URL to invoke the   Authorization Capability against, aka the `invocationTarget`. Either  `url` or `capability` must be specified. |
-| [options.capability] | <code>string</code> | The parent capability to delegate.   Either `url` or `capability` must be specified. |
-| options.targetDelegate | <code>string</code> | The URL identifying the entity to   delegate to. |
-| [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `url`. |
+| [options.capability] | <code>string</code> | The parent capability to delegate; must be an object if it is a delegated zcap, can be a string if it is a root zcap but `invocationTarget` must be specified; if not specified, this will be auto-generated as a root zcap for the given `invocationTarget`. |
+| options.controller | <code>string</code> | The URL identifying the entity to   delegate to, i.e., the party that will control the new zcap. |
+| [options.invocationTarget] | <code>string</code> | Optional invocation target to use when narrowing a `capability`'s existing invocationTarget. Default is to use `capability.invocationTarget`, provided that `capability` is an object. |
 | [options.expires] | <code>string</code> | Optional expiration value for the   delegation. Default is 5 minutes after `Date.now()`. |
 | [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
 

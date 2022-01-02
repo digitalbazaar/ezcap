@@ -8,6 +8,8 @@
 ### Changed
 - **BREAKING**: Use zcapld@6.
 - **BREAKING**: Use `urn:uuid:` by default for delegated zcaps.
+- **BREAKING**: Rename `targetDelegate` param to `controller` to match the
+  property name that the value will be assigned to in the delegated zcap.
 
 ### Removed
 - **BREAKING**: Remove `url` parameter from `delegate()` to reduce confusion
