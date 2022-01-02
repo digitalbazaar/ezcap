@@ -45,7 +45,9 @@ describe('ZcapClient', () => {
       const url = 'https://zcap.example/items';
       const targetDelegate =
         'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
-      const delegatedZcap = await zcapClient.delegate({url, targetDelegate});
+      const delegatedZcap = await zcapClient.delegate({
+        invocationTarget: url, targetDelegate
+      });
 
       delegatedZcap.parentCapability.should.equal(
         'urn:zcap:root:' + encodeURIComponent(url));
@@ -70,7 +72,8 @@ describe('ZcapClient', () => {
         // delegate to self to allow deeper delegation without needing to
         // create another entity
         const targetDelegate = didDocument.id;
-        const delegatedZcap = await zcapClient.delegate({url, targetDelegate});
+        const delegatedZcap = await zcapClient.delegate(
+          {invocationTarget: url, targetDelegate});
 
         delegatedZcap.parentCapability.should.equal(
           'urn:zcap:root:' + encodeURIComponent(url));
