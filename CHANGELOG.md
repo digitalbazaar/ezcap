@@ -14,6 +14,8 @@
 ### Removed
 - **BREAKING**: Remove `url` parameter from `delegate()` to reduce confusion
   over usage. Now `capability` and / or `invocationTarget` must be specified.
+- **BREAKING**: Remove support for capability invocation targets that are
+  objects and not strings. This reduces optionality to simplify.
 
 ## 1.0.0 - 2021-07-22
 
