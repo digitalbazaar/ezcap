@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.0 - 2022-01-xx
+## 2.0.0 - 2022-01-11
 
 ### Added
 - Allow `expires` to be a `Date` instance.
