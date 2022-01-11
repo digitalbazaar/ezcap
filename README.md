@@ -230,7 +230,7 @@ regarding the systems it interacts with:
 * The REST-ful systems center around reading and writing resources.
 
 If these assumptions do not apply to your system, the
-[zcapld](https://github.com/digitalbazaar/zcapld) library might
+[zcap](https://github.com/digitalbazaar/zcap) library might
 be a better, albeit more complex, solution for you.
 
 Looking at each of these core assumptions more closely will help explain how designing systems to these constraints make it much easier to think about
