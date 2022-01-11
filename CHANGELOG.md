@@ -1,5 +1,10 @@
 # @digitalbazaar/ezcap Changelog
 
+## 2.0.1 - 2022-01-xx
+
+### Changed
+- Updated dependencies.
+
 ## 2.0.0 - 2022-01-11
 
 ### Added
