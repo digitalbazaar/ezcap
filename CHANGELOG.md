@@ -6,7 +6,7 @@
 - Allow `expires` to be a `Date` instance.
 
 ### Changed
-- **BREAKING**: Use zcapld@6.
+- **BREAKING**: Use zcap@7.
 - **BREAKING**: Use `urn:uuid:` by default for delegated zcaps.
 - **BREAKING**: Rename `targetDelegate` param to `controller` to match the
   property name that the value will be assigned to in the delegated zcap.
