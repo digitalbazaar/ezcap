@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.2 - 2022-02-xx
+## 2.0.2 - 2022-02-15
 
 ### Fixed
 - Add missing helper function to get delegation proofs.
