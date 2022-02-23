@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.3 - 2022-02-xx
+## 2.0.3 - 2022-02-23
 
 ### Fixed
 - Ensure zcap delegation time is after parent.
