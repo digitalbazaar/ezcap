@@ -55,6 +55,32 @@ describe('ZcapClient', () => {
       delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
       delegatedZcap.proof.capabilityChain.should.have.length(1);
     });
+    it('should throw error if controller is not provided when delegating zcap',
+      async () => {
+        const {didDocument, keyPairs} = await didKeyDriver.generate();
+        const {invocationSigner, delegationSigner} = getCapabilitySigners({
+          didDocument, keyPairs});
+        const zcapClient = new ZcapClient({
+          SuiteClass: Ed25519Signature2020,
+          invocationSigner, delegationSigner
+        });
+        expect(zcapClient).to.exist;
+
+        const url = 'https://zcap.example/items';
+        let err;
+        let delegatedZcap;
+        try {
+          await zcapClient.delegate({
+            invocationTarget: url
+          });
+        } catch(e) {
+          err = e;
+        }
+        expect(delegatedZcap).to.not.exist;
+        expect(err).to.exist;
+        err.name.should.equal('TypeError');
+        err.message.should.equal('"controller" must be provided.');
+      });
     it('should delegate a deeper zcap chain', async () => {
       const {didDocument, keyPairs} = await didKeyDriver.generate();
       const {invocationSigner, delegationSigner} = getCapabilitySigners({
