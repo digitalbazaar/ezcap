@@ -78,8 +78,8 @@ describe('ZcapClient', () => {
         }
         expect(delegatedZcap).to.not.exist;
         expect(err).to.exist;
-        err.name.should.equal('TypeError');
-        err.message.should.equal('"controller" must be provided.');
+        err.message.should.equal(
+          '"controller" must be a string expressing an absolute URI.');
       });
     it('should delegate a deeper zcap chain', async () => {
       const {didDocument, keyPairs} = await didKeyDriver.generate();
