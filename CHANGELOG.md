@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.4 - 2022-TBD
+## 2.0.4 - 2022-03-07
 
 ### Fixed
 - Add check for `controller` in `ZcapClient.delegate` API.
