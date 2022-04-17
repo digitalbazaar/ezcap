@@ -1,5 +1,12 @@
 # @digitalbazaar/ezcap Changelog
 
+## 2.0.5 - 2022-04-xx
+
+### Fixed
+- Fix `allowedActions` default in `delegate`. Now `allowedActions`
+  will properly use the parent zcap's allowed actions if it is not
+  provided.
+
 ## 2.0.4 - 2022-03-07
 
 ### Fixed
