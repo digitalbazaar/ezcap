@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.5 - 2022-04-xx
+## 2.0.5 - 2022-04-17
 
 ### Fixed
 - Fix `allowedActions` default in `delegate`. Now `allowedActions`
