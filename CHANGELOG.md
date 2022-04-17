@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 2.0.6 - 2022-04-xx
+## 2.0.6 - 2022-04-17
 
 ### Fixed
 - Get default `allowedActions` from `capability` to be delegated.
