@@ -1,5 +1,13 @@
 # @digitalbazaar/ezcap Changelog
 
+## 3.0.0 - 2022-xx-xx
+
+### Changed
+- **BREAKING**: Convert to module (ESM).
+- **BREAKING**: Require Node.js >=14.
+- Update dependencies.
+- Lint module.
+
 ## 2.0.6 - 2022-04-17
 
 ### Fixed
