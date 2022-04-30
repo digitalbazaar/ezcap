@@ -4,7 +4,7 @@
 import * as didKey from '@digitalbazaar/did-method-key';
 import chai from 'chai';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
-import {getCapabilitySigners, ZcapClient} from '../../';
+import {getCapabilitySigners, ZcapClient} from '../../lib/index.js';
 
 chai.should();
 const {expect} = chai;
