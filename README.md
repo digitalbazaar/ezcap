@@ -280,6 +280,11 @@ These are the two assumptions that ezcap makes and with those two assumptions,
 ## Functions
 
 <dl>
+<dt><a href="#_getDelegationProofs">_getDelegationProofs(options)</a> ⇒ <code>object</code></dt>
+<dd><p>Retrieves the delegation proof(s) for a capability that is associated with
+its parent capability. A capability that has no parent or no associated
+delegation proofs will cause this function to return an empty array.</p>
+</dd>
 <dt><a href="#getCapabilitySigners">getCapabilitySigners(options)</a> ⇒ <code>object</code></dt>
 <dd><p>Retrieves the first set of capability invocation and delegation signers
 associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
@@ -307,15 +312,31 @@ Authorization Capabilities (ZCAPs).</p>
 </dd>
 </dl>
 
+<a name="_getDelegationProofs"></a>
+
+## \_getDelegationProofs(options) ⇒ <code>object</code>
+Retrieves the delegation proof(s) for a capability that is associated with
+its parent capability. A capability that has no parent or no associated
+delegation proofs will cause this function to return an empty array.
+
+**Kind**: global function  
+**Returns**: <code>object</code> - Any `capabilityDelegation` proof objects attached to the
+  given capability.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.capability | <code>object</code> | The authorization capability. |
+
 <a name="getCapabilitySigners"></a>
 
 ## getCapabilitySigners(options) ⇒ <code>object</code>
 Retrieves the first set of capability invocation and delegation signers
 associated with the `didDocument` from the `keyPairs`.
 
-**Kind**: global function
+**Kind**: global function  
 **Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
-  associated with the didDocument.
+  associated with the didDocument.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -328,8 +349,8 @@ associated with the `didDocument` from the `keyPairs`.
 ## generateZcapUri(options) ⇒ <code>string</code>
 Generate a zcap URI given a root capability URL or a delegated flag.
 
-**Kind**: global function
-**Returns**: <code>string</code> - - A zcap URI.
+**Kind**: global function  
+**Returns**: <code>string</code> - - A zcap URI.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -341,8 +362,8 @@ Generate a zcap URI given a root capability URL or a delegated flag.
 ## HttpsAgent : <code>object</code>
 An object that manages connection persistence and reuse for HTTPS requests.
 
-**Kind**: global typedef
-**See**: https://nodejs.org/api/https.html#https_class_https_agent
+**Kind**: global typedef  
+**See**: https://nodejs.org/api/https.html#https_class_https_agent  
 <a name="LinkedDataSignatureSuiteClass"></a>
 
 ## LinkedDataSignatureSuiteClass : <code>object</code>
@@ -350,7 +371,7 @@ An class that can be instantiated to create a suite capable of generating a
 Linked Data Signature. Its constructor must receive a `signer` instance
 that includes `.sign()` function and `id` and `controller` properties.
 
-**Kind**: global typedef
+**Kind**: global typedef  
 <a name="ZcapClient"></a>
 
 ## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
@@ -358,19 +379,19 @@ Creates a new ZcapClient instance that can be used to perform
 requests against HTTP URLs that are authorized via
 Authorization Capabilities (ZCAPs).
 
-**Kind**: global typedef
-**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.
+**Kind**: global typedef  
+**Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
+| options.SuiteClass | [<code>LinkedDataSignatureSuiteClass</code>](#LinkedDataSignatureSuiteClass) | The LD   signature suite class to use to sign requests and delegations. |
 | [options.didDocument] | <code>object</code> | A DID Document that contains   `capabilityInvocation` and `capabilityDelegation` verification   relationships; `didDocument` and `keyPairs`, or `invocationSigner` and   `delegationSigner` must be provided in order to invoke or delegate   zcaps, respectively. |
 | [options.keyPairs] | <code>Map</code> | A map of key pairs associated with   `didDocument` indexed by key pair; `didDocument` and `keyPairs`, or   `invocationSigner` and `delegationSigner` must be provided in order to    invoke or delegate zcaps, respectively. |
-| [options.defaultHeaders] | <code>object</code> | The optional default HTTP   headers to include in every invocation request. |
-| [options.agent] | [<code>HttpsAgent</code>](#HttpsAgent) | An optional HttpsAgent to use to   when performing HTTPS requests. |
-| [options.invocationSigner] | <code>object</code> | An object with a   `.sign()` function and `id` and `controller` properties that will be   used for signing requests; `invocationSigner` or `didDocument` and   `keyPairs` must be provided to invoke zcaps. |
 | [options.delegationSigner] | <code>object</code> | An object with a   `.sign()` function and `id` and `controller` properties that will be   used for delegating zcaps; `delegationSigner` or `didDocument` and   `keyPairs` must be provided to delegate zcaps. |
-| options.SuiteClass | [<code>LinkedDataSignatureSuiteClass</code>](#LinkedDataSignatureSuiteClass) | The LD   signature suite class to use to sign requests and delegations. |
+| [options.invocationSigner] | <code>object</code> | An object with a   `.sign()` function and `id` and `controller` properties that will be   used for signing requests; `invocationSigner` or `didDocument` and   `keyPairs` must be provided to invoke zcaps. |
+| [options.agent] | [<code>HttpsAgent</code>](#HttpsAgent) | An optional HttpsAgent to use to   when performing HTTPS requests. |
+| [options.defaultHeaders] | <code>object</code> | The optional default HTTP   headers to include in every invocation request. |
 | [options.documentLoader] | <code>function</code> | Optional document loader   to load suite-related contexts. If none is provided, one will be   auto-generated if the suite class expresses its required context. |
 
 
@@ -385,33 +406,37 @@ Authorization Capabilities (ZCAPs).
 ### zcapClient.delegate(options) ⇒ <code>Promise.&lt;object&gt;</code>
 Delegates an Authorization Capability to a target delegate.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
 **Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to a delegated
-  capability.
+  capability.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| [options.capability] | <code>string</code> | The parent capability to delegate; must be an object if it is a delegated zcap, can be a string if it is a root zcap but `invocationTarget` must be specified; if not specified, this will be auto-generated as a root zcap for the given `invocationTarget`. |
+| [options.capability] | <code>object</code> | The parent capability to   delegate; must be an object if it is a delegated zcap, can be a string   if it is a root zcap but then `invocationTarget` must be specified; if   not specified, this will be auto-generated as a root zcap for the given   `invocationTarget`. |
 | options.controller | <code>string</code> | The URL identifying the entity to   delegate to, i.e., the party that will control the new zcap. |
-| [options.invocationTarget] | <code>string</code> | Optional invocation target to use when narrowing a `capability`'s existing invocationTarget. Default is to use `capability.invocationTarget`, provided that `capability` is an object. |
-| [options.expires] | <code>string</code> | Optional expiration value for the   delegation. Default is 5 minutes after `Date.now()`. |
+| [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `capability.invocationTarget`, provided that   `capability` is an object. |
+| [options.expires] | <code>string</code> \| <code>Date</code> | Optional expiration value   for the delegation. Default is 5 minutes after `Date.now()`. |
 | [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
 
 <a name="ZcapClient+request"></a>
 
 ### zcapClient.request(options) ⇒ <code>Promise.&lt;object&gt;</code>
-Performs an HTTP request given an Authorization Capability and
-a target URL.
+Performs an HTTP request given an Authorization Capability (zcap) and/or
+a target URL. If no URL is given, the invocation target from the
+capability will be used. If a capability is given as a string, it MUST
+be a root capability. If both a capability and a URL are given, then
+the capability's invocation target MUST be a RESTful prefix of or
+equivalent to the URL.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>object</code> | The options to use. |
-| options.url | <code>string</code> | The URL to invoke the   Authorization Capability against. |
-| [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
+| [options.url] | <code>string</code> | The URL to invoke the   Authorization Capability against; if not provided, a `capability` must   be provided instead. |
+| [options.capability] | <code>string</code> \| <code>object</code> | The capability to invoke at   the given URL. Default: generate root capability from options.url. |
 | [options.method] | <code>string</code> | The HTTP method to use when accessing   the resource. Default: 'get'. |
 | [options.action] | <code>string</code> | The capability action that is being   invoked. Default: 'read'. |
 | [options.headers] | <code>object</code> | The additional headers to sign and   send along with the HTTP request. Default: {}. |
@@ -423,8 +448,8 @@ a target URL.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a read operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -439,8 +464,8 @@ given URL to perform a read operation.
 Convenience function that invokes an Authorization Capability against a
 given URL to perform a write operation.
 
-**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)
-**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.
+**Kind**: instance method of [<code>ZcapClient</code>](#ZcapClient)  
+**Returns**: <code>Promise.&lt;object&gt;</code> - - A promise that resolves to an HTTP response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
