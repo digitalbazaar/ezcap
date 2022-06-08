@@ -36,7 +36,15 @@ preferably via parties other than the implementer.
 
 ## Install
 
-- Node.js 12+ is required.
+- Browsers and Node.js 14+ are supported.
+- [Web Crypto API][] required. Older browsers and Node.js 14 must use a
+  polyfill.
+
+To install from NPM:
+
+```
+npm install @digitalbazaar/ezcap
+```
 
 To install locally (for development):
 
@@ -74,7 +82,7 @@ const {didDocument, keyPairs} = await didKeyDriver.generate();
 
 // create a new zcap client using the generated cryptographic material
 const zcapClient = new ZcapClient({
-  didDocument, keyPairs, suiteClass: Ed25519Signature2020
+  didDocument, keyPairs, SuiteClass: Ed25519Signature2020
 });
 ```
 
@@ -126,11 +134,12 @@ to the entity identified by the delegation target so that they can use it
 to access the resource.
 
 ```js
-const capability = 'https://zcap.example/my-account/items';
-const targetDelegate =
+const invocationTarget = 'https://zcap.example/my-account/items';
+const controller =
   'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH';
 const allowedActions = ['read'];
-const delegatedCapability = zcapClient.delegate({capability, targetDelegate, allowedActions});
+const delegatedCapability = zcapClient.delegate(
+  {invocationTarget, controller, allowedActions});
 ```
 
 ### Reading with a Delegated Capability
@@ -285,3 +294,5 @@ Digital Bazaar: support@digitalbazaar.com
 ## License
 
 [New BSD License (3-clause)](LICENSE) © Digital Bazaar
+
+[Web Crypto API]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API
