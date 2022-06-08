@@ -3,7 +3,22 @@ name: Node.js CI
 on: [push]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - name: Run eslint
+      run: npm run lint
   test-node:
+    needs: [lint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,6 +35,7 @@ jobs:
       env:
         CI: true
   test-karma:
+    needs: [lint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,20 +51,6 @@ jobs:
       run: npm run test-karma
       env:
         CI: true
-  lint:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - name: Run eslint
-      run: npm run lint
   coverage:
     needs: [test-node, test-karma]
     runs-on: ubuntu-latest
