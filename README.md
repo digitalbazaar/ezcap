@@ -277,6 +277,13 @@ very simple code.
 These are the two assumptions that ezcap makes and with those two assumptions,
 80% of all use cases we've encountered are covered.
 
+## Classes
+
+<dl>
+<dt><a href="#ZcapClient">ZcapClient</a></dt>
+<dd></dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -300,65 +307,27 @@ associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
 Linked Data Signature. Its constructor must receive a <code>signer</code> instance
 that includes <code>.sign()</code> function and <code>id</code> and <code>controller</code> properties.</p>
 </dd>
-<dt><a href="#ZcapClient">ZcapClient</a> ⇒ <code><a href="#ZcapClient">ZcapClient</a></code></dt>
-<dd><p>Creates a new ZcapClient instance that can be used to perform
-requests against HTTP URLs that are authorized via
-Authorization Capabilities (ZCAPs).</p>
-</dd>
 </dl>
 
-<a name="getCapabilitySigners"></a>
-
-## getCapabilitySigners(options) ⇒ <code>object</code>
-Retrieves the first set of capability invocation and delegation signers
-associated with the `didDocument` from the `keyPairs`.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
-  associated with the didDocument.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>object</code> | The options to use. |
-| options.didDocument | <code>string</code> | A DID Document containing   verification relationships for capability invocation and delegation. |
-| options.keyPairs | <code>string</code> | A map containing keypairs indexed by   key ID. |
-
-<a name="generateZcapUri"></a>
-
-## generateZcapUri(options) ⇒ <code>string</code>
-Generate a zcap URI given a root capability URL or a delegated flag.
-
-**Kind**: global function  
-**Returns**: <code>string</code> - - A zcap URI.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>object</code> | The options to use. |
-| [options.url] | <code>string</code> | Optional URL identifying the root capability. |
-
-<a name="HttpsAgent"></a>
-
-## HttpsAgent : <code>object</code>
-An object that manages connection persistence and reuse for HTTPS requests.
-
-**Kind**: global typedef  
-**See**: https://nodejs.org/api/https.html#https_class_https_agent  
-<a name="LinkedDataSignatureSuiteClass"></a>
-
-## LinkedDataSignatureSuiteClass : <code>object</code>
-An class that can be instantiated to create a suite capable of generating a
-Linked Data Signature. Its constructor must receive a `signer` instance
-that includes `.sign()` function and `id` and `controller` properties.
-
-**Kind**: global typedef  
 <a name="ZcapClient"></a>
 
-## ZcapClient ⇒ [<code>ZcapClient</code>](#ZcapClient)
+## ZcapClient
+**Kind**: global class  
+
+* [ZcapClient](#ZcapClient)
+    * [new ZcapClient(options)](#new_ZcapClient_new)
+    * [.delegate(options)](#ZcapClient+delegate) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.request(options)](#ZcapClient+request) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.read(options)](#ZcapClient+read) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.write(options)](#ZcapClient+write) ⇒ <code>Promise.&lt;object&gt;</code>
+
+<a name="new_ZcapClient_new"></a>
+
+### new ZcapClient(options)
 Creates a new ZcapClient instance that can be used to perform
 requests against HTTP URLs that are authorized via
 Authorization Capabilities (ZCAPs).
 
-**Kind**: global typedef  
 **Returns**: [<code>ZcapClient</code>](#ZcapClient) - - The new ZcapClient instance.  
 
 | Param | Type | Description |
@@ -372,13 +341,6 @@ Authorization Capabilities (ZCAPs).
 | [options.agent] | [<code>HttpsAgent</code>](#HttpsAgent) | An optional HttpsAgent to use to   when performing HTTPS requests. |
 | [options.defaultHeaders] | <code>object</code> | The optional default HTTP   headers to include in every invocation request. |
 | [options.documentLoader] | <code>function</code> | Optional document loader   to load suite-related contexts. If none is provided, one will be   auto-generated if the suite class expresses its required context. |
-
-
-* [ZcapClient](#ZcapClient) ⇒ [<code>ZcapClient</code>](#ZcapClient)
-    * [.delegate(options)](#ZcapClient+delegate) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.request(options)](#ZcapClient+request) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.read(options)](#ZcapClient+read) ⇒ <code>Promise.&lt;object&gt;</code>
-    * [.write(options)](#ZcapClient+write) ⇒ <code>Promise.&lt;object&gt;</code>
 
 <a name="ZcapClient+delegate"></a>
 
@@ -454,6 +416,50 @@ given URL to perform a write operation.
 | [options.headers] | <code>object</code> | The additional headers to sign and   send along with the HTTP request. |
 | [options.capability] | <code>string</code> | The capability to invoke at the   given URL. Default: generate root capability from options.url. |
 
+<a name="getCapabilitySigners"></a>
+
+## getCapabilitySigners(options) ⇒ <code>object</code>
+Retrieves the first set of capability invocation and delegation signers
+associated with the `didDocument` from the `keyPairs`.
+
+**Kind**: global function  
+**Returns**: <code>object</code> - - A valid `invocationSigner` and `delegationSigner`
+  associated with the didDocument.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| options.didDocument | <code>string</code> | A DID Document containing   verification relationships for capability invocation and delegation. |
+| options.keyPairs | <code>string</code> | A map containing keypairs indexed by   key ID. |
+
+<a name="generateZcapUri"></a>
+
+## generateZcapUri(options) ⇒ <code>string</code>
+Generate a zcap URI given a root capability URL or a delegated flag.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - - A zcap URI.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | The options to use. |
+| [options.url] | <code>string</code> | Optional URL identifying the root capability. |
+
+<a name="HttpsAgent"></a>
+
+## HttpsAgent : <code>object</code>
+An object that manages connection persistence and reuse for HTTPS requests.
+
+**Kind**: global typedef  
+**See**: https://nodejs.org/api/https.html#https_class_https_agent  
+<a name="LinkedDataSignatureSuiteClass"></a>
+
+## LinkedDataSignatureSuiteClass : <code>object</code>
+An class that can be instantiated to create a suite capable of generating a
+Linked Data Signature. Its constructor must receive a `signer` instance
+that includes `.sign()` function and `id` and `controller` properties.
+
+**Kind**: global typedef  
 
 ## Contribute
 
