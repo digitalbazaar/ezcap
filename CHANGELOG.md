@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 3.0.0 - 2022-xx-xx
+## 3.0.0 - 2022-06-09
 
 ### Changed
 - **BREAKING**: Convert to module (ESM).
