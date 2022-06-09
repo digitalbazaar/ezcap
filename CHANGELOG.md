@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 3.0.1 - 2022-xx-xx
+## 3.0.1 - 2022-06-09
 
 ### Changed
 - Mark ZcapClient as a class in the docs.
