@@ -280,11 +280,6 @@ These are the two assumptions that ezcap makes and with those two assumptions,
 ## Functions
 
 <dl>
-<dt><a href="#_getDelegationProofs">_getDelegationProofs(options)</a> ⇒ <code>object</code></dt>
-<dd><p>Retrieves the delegation proof(s) for a capability that is associated with
-its parent capability. A capability that has no parent or no associated
-delegation proofs will cause this function to return an empty array.</p>
-</dd>
 <dt><a href="#getCapabilitySigners">getCapabilitySigners(options)</a> ⇒ <code>object</code></dt>
 <dd><p>Retrieves the first set of capability invocation and delegation signers
 associated with the <code>didDocument</code> from the <code>keyPairs</code>.</p>
@@ -311,22 +306,6 @@ requests against HTTP URLs that are authorized via
 Authorization Capabilities (ZCAPs).</p>
 </dd>
 </dl>
-
-<a name="_getDelegationProofs"></a>
-
-## \_getDelegationProofs(options) ⇒ <code>object</code>
-Retrieves the delegation proof(s) for a capability that is associated with
-its parent capability. A capability that has no parent or no associated
-delegation proofs will cause this function to return an empty array.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - Any `capabilityDelegation` proof objects attached to the
-  given capability.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>object</code> | The options to use. |
-| options.capability | <code>object</code> | The authorization capability. |
 
 <a name="getCapabilitySigners"></a>
 
