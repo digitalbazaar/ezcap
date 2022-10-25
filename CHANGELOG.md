@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 4.0.0 - 2022-10-xx
+## 4.0.0 - 2022-10-25
 
 ### Changed
 - **BREAKING**: Use `@digitalbazaar/zcap@9` and `jsonld-signatures@11`.
