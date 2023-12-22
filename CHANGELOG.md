@@ -1,5 +1,11 @@
 # @digitalbazaar/ezcap Changelog
 
+## 4.0.1 - 2023-12-dd
+
+### Fixed
+- Fix bug that prevented some invocation targets from being attenuated
+  using query params.
+
 ## 4.0.0 - 2022-10-25
 
 ### Changed
