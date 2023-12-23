@@ -1,10 +1,10 @@
 /*!
- * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2020-2023 Digital Bazaar, Inc. All rights reserved.
  */
 import * as didKey from '@digitalbazaar/did-method-key';
+import {getCapabilitySigners, ZcapClient} from '../../lib/index.js';
 import chai from 'chai';
 import {Ed25519Signature2020} from '@digitalbazaar/ed25519-signature-2020';
-import {getCapabilitySigners, ZcapClient} from '../../lib/index.js';
 
 chai.should();
 const {expect} = chai;
