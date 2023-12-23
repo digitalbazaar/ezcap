@@ -1,5 +1,13 @@
 # @digitalbazaar/ezcap Changelog
 
+## 4.1.0 - 2023-12-dd
+
+### Changed
+- Updated dependencies:
+  - `@digitalbazaar/http-client@4`.
+  - `uuid@9`.
+- Set node.js engines recommendation to 18+.
+
 ## 4.0.1 - 2023-12-22
 
 ### Fixed
