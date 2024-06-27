@@ -48,6 +48,17 @@ describe('ZcapClient', () => {
     it('should delegate a root zcap', async () => {
       const verificationKeyPair = await Ed25519VerificationKey2020.generate();
 
+      didKeyDriver.use({
+        multibaseMultikeyHeader: 'z6Mk',
+        fromMultibase: Ed25519VerificationKey2020.from
+      });
+      const {didDocument} =
+        await didKeyDriver.fromKeyPair({verificationKeyPair});
+
+      // this `id` value manifest as the `verificationMethod` on the proof
+      // see the assertion below
+      verificationKeyPair.id = didDocument.verificationMethod[0].id;
+
       const zcapClient = new ZcapClient({
         SuiteClass: Ed25519Signature2020,
         invocationSigner: verificationKeyPair.signer(),
@@ -59,8 +70,6 @@ describe('ZcapClient', () => {
       const controller =
       'did:key:z6MkogR2ZPr4ZGvLV2wZ7cWUamNMhpg3bkVeXARDBrKQVn2c';
 
-      console.log('---------------> Fails on next line');
-
       const delegatedZcap = await zcapClient.delegate({
         invocationTarget: url, controller
       });
@@ -70,6 +79,8 @@ describe('ZcapClient', () => {
       delegatedZcap.controller.should.equal(controller);
       delegatedZcap.proof.proofPurpose.should.equal('capabilityDelegation');
       delegatedZcap.proof.capabilityChain.should.have.length(1);
+      delegatedZcap.proof.verificationMethod.should.equal(
+        verificationKeyPair.id);
     });
     it('should throw error if controller is not provided when delegating zcap',
       async () => {
