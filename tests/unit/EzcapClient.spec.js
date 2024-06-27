@@ -46,22 +46,12 @@ describe('ZcapClient', () => {
       expect(zcapClient).to.exist;
     });
     it('should delegate a root zcap', async () => {
-      didKeyDriver.use({
-        multibaseMultikeyHeader: 'z6Mk',
-        fromMultibase: Ed25519VerificationKey2020.from
-      });
       const verificationKeyPair = await Ed25519VerificationKey2020.generate();
-
-      const {didDocument, keyPairs} =
-        await didKeyDriver.fromKeyPair({verificationKeyPair});
-
-      const {invocationSigner, delegationSigner} = getCapabilitySigners({
-        didDocument, keyPairs
-      });
 
       const zcapClient = new ZcapClient({
         SuiteClass: Ed25519Signature2020,
-        invocationSigner, delegationSigner
+        invocationSigner: verificationKeyPair.signer(),
+        delegationSigner: verificationKeyPair.signer(),
       });
       expect(zcapClient).to.exist;
 
