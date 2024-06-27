@@ -32,6 +32,7 @@
   "devDependencies": {
     "@digitalbazaar/did-method-key": "^5.2.0",
     "@digitalbazaar/ed25519-signature-2020": "^5.0.0",
+    "@digitalbazaar/ed25519-verification-key-2020": "^4.1.0",
     "c8": "^8.0.1",
     "chai": "^4.3.6",
     "cross-env": "^7.0.3",
