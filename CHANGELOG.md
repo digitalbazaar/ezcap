@@ -1,5 +1,10 @@
 # @digitalbazaar/ezcap Changelog
 
+## 4.2.0 - 2025-mm-dd
+
+### Added
+- Allow `now` to be passed to `delegate()` to make testing easier.
+
 ## 4.1.0 - 2024-01-01
 
 ### Changed
