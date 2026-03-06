@@ -1,5 +1,10 @@
 # @digitalbazaar/ezcap Changelog
 
+## 5.0.0 - 2026-xx-xx
+
+### Changed
+- **BREAKING**: Require Node.js >=20.
+
 ## 4.2.0 - 2025-11-16
 
 ### Added
