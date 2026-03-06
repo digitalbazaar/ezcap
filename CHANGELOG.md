@@ -4,6 +4,7 @@
 
 ### Changed
 - **BREAKING**: Require Node.js >=20.
+- Use `crypto.randomUUID()` instead of `uuid` package.
 
 ## 4.2.0 - 2025-11-16
 

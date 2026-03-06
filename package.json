@@ -26,8 +26,7 @@
     "@digitalbazaar/http-client": "^4.0.0",
     "@digitalbazaar/http-signature-zcap-invoke": "^6.0.0",
     "@digitalbazaar/zcap": "^9.0.0",
-    "jsonld-signatures": "^11.0.0",
-    "uuid": "^9.0.1"
+    "jsonld-signatures": "^11.0.0"
   },
   "devDependencies": {
     "@digitalbazaar/did-method-key": "^3.0.0",
