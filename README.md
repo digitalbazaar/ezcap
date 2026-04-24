@@ -362,6 +362,7 @@ Delegates an Authorization Capability to a target delegate.
 | [options.invocationTarget] | <code>string</code> | Optional invocation target   to use when narrowing a `capability`'s existing invocationTarget.   Default is to use `capability.invocationTarget`, provided that   `capability` is an object. |
 | [options.expires] | <code>string</code> \| <code>Date</code> | Optional expiration value   for the delegation. Default is 5 minutes after `Date.now()`. |
 | [options.allowedActions] | <code>string</code> \| <code>Array</code> | Optional list of allowed   actions or string specifying allowed delegated action. Default: [] -   delegate all actions. |
+| [options.now] | <code>number</code> | Optional timestamp for the current time;   useful for testing. |
 
 <a name="ZcapClient+request"></a>
 
