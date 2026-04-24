@@ -1,6 +1,6 @@
 # ezcap
 
-[![Node.js CI](https://github.com/digitalbazaar/ezcap/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/ezcap/actions?query=workflow%3A%22Node.js+CI%22)
+[![Build status](https://github.com/digitalbazaar/ezcap/actions/workflows/main.yaml/badge.svg)](https://github.com/digitalbazaar/ezcap/actions/workflows/main.yaml)
 
 > An easy to use, opinionated Authorization Capabilities (zcap) client library
 > for the browser and Node.js.
