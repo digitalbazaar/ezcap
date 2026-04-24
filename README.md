@@ -36,7 +36,11 @@ preferably via parties other than the implementer.
 
 ## Install
 
-- Browsers and Node.js 20+ are supported.
+This software requires and supports maintained recent versions of Node.js and
+browsers. Updates may remove support for older unmaintained platform versions.
+Please use dependency version lock files and testing to ensure compatibility
+with this software.
+
 - [Web Crypto API][] required. Use a polyfill if needed.
 
 To install from NPM:

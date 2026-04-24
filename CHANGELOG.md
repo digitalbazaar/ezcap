@@ -1,10 +1,13 @@
 # @digitalbazaar/ezcap Changelog
 
-## 5.0.0 - 2026-xx-xx
+## 4.3.0 - 2026-04-xx
 
 ### Changed
-- **BREAKING**: Require Node.js >=20.
 - Use `crypto.randomUUID()` instead of `uuid` package.
+- **NOTE**: Update supported platforms.
+  - Test on Node.js >=20.
+  - Update `engines.node` to `>=20`.
+  - Update README requirements section.
 
 ## 4.2.0 - 2025-11-16
 
