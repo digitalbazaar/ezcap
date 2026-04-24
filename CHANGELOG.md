@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 4.3.0 - 2026-04-xx
+## 4.3.0 - 2026-04-24
 
 ### Changed
 - Use `crypto.randomUUID()` instead of `uuid` package.
