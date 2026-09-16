@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2020-2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2020-2026 Digital Bazaar, Inc.
  */
 import * as didKey from '@digitalbazaar/did-method-key';
 import {getCapabilitySigners, ZcapClient} from '../../lib/index.js';
