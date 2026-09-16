@@ -1,7 +1,5 @@
 # ezcap
 
-[![Build status](https://github.com/digitalbazaar/ezcap/actions/workflows/main.yaml/badge.svg)](https://github.com/digitalbazaar/ezcap/actions/workflows/main.yaml)
-
 > An easy to use, opinionated Authorization Capabilities (zcap) client library
 > for the browser and Node.js.
 
