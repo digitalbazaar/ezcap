@@ -3,6 +3,10 @@
 ## 4.4.0 - 2026-09-xx
 
 ### Changed
+- Update dependencies to ensure use of security fixes.
+  - `@digitalbazaar/http-client@4.4.0`
+  - `@digitalbazaar/zcap@9.0.2`
+- Update dev dependencies.
 - Update supported platforms.
   - Test on Node.js >=22.
   - Update `engines.node` to `>=22`.
