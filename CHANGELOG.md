@@ -1,5 +1,12 @@
 # @digitalbazaar/ezcap Changelog
 
+## 4.4.0 - 2026-09-xx
+
+### Changed
+- Update supported platforms.
+  - Test on Node.js >=22.
+  - Update `engines.node` to `>=22`.
+
 ## 4.3.0 - 2026-04-24
 
 ### Changed
