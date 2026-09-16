@@ -70,7 +70,7 @@ describe('ZcapClient', () => {
         let err;
         let delegatedZcap;
         try {
-          await zcapClient.delegate({
+          delegatedZcap = await zcapClient.delegate({
             invocationTarget: url
           });
         } catch(e) {
