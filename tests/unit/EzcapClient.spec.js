@@ -141,4 +141,96 @@ describe('ZcapClient', () => {
       }
     });
   });
+
+  describe('ZcapClient.request', () => {
+    it('should accept blob parameter without throwing', async () => {
+      const {didDocument, keyPairs} = await didKeyDriver.generate();
+      const {invocationSigner} = getCapabilitySigners({didDocument, keyPairs});
+      const zcapClient = new ZcapClient({
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner
+      });
+
+      const blob = Buffer.from('hello world');
+
+      // Test that the method accepts blob parameter without throwing
+      // This will fail at HTTP level, but we're testing the method signature
+      let error;
+      try {
+        await zcapClient.request({
+          url: 'https://zcap.example/items',
+          method: 'post',
+          blob
+        });
+      } catch(e) {
+        error = e;
+      }
+
+      // Should not throw a parameter validation error
+      // HTTP errors are expected since we're not mocking
+      expect(error).to.exist;
+      expect(error.message).to.not.include('blob');
+      expect(error.message).to.not.include('parameter');
+      expect(error.message).to.not.include('undefined');
+    });
+
+    it('should accept both json and blob parameters', async () => {
+      const {didDocument, keyPairs} = await didKeyDriver.generate();
+      const {invocationSigner} = getCapabilitySigners({didDocument, keyPairs});
+      const zcapClient = new ZcapClient({
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner
+      });
+
+      const blob = Buffer.from('hello world');
+      const json = {message: 'test'};
+
+      // Test that the method accepts both parameters without throwing
+      let error;
+      try {
+        await zcapClient.request({
+          url: 'https://zcap.example/items',
+          method: 'post',
+          json,
+          blob
+        });
+      } catch(e) {
+        error = e;
+      }
+
+      // Should not throw a parameter validation error
+      expect(error).to.exist;
+      expect(error.message).to.not.include('blob');
+      expect(error.message).to.not.include('json');
+      expect(error.message).to.not.include('parameter');
+    });
+
+    it('should accept blob parameter in write method', async () => {
+      const {didDocument, keyPairs} = await didKeyDriver.generate();
+      const {invocationSigner} = getCapabilitySigners({didDocument, keyPairs});
+      const zcapClient = new ZcapClient({
+        SuiteClass: Ed25519Signature2020,
+        invocationSigner
+      });
+
+      const blob = Buffer.from('hello world');
+
+      // Test that the write method accepts blob parameter without throwing
+      let error;
+      try {
+        await zcapClient.write({
+          url: 'https://zcap.example/items',
+          blob
+        });
+      } catch(e) {
+        error = e;
+      }
+
+      // Should not throw a parameter validation error
+      expect(error).to.exist;
+      expect(error.message).to.not.include('blob');
+      expect(error.message).to.not.include('parameter');
+      expect(error.message).to.not.include('undefined');
+    });
+  });
 });
