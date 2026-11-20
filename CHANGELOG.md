@@ -1,6 +1,6 @@
 # @digitalbazaar/ezcap Changelog
 
-## 4.4.1 - 2026-11-dd
+## 4.4.1 - 2026-11-20
 
 ### Changed
 - Update dependencies:
